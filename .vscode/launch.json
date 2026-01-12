@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ShortenerApplication<shortener>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.main.shortener.ShortenerApplication",
+            "projectName": "shortener",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

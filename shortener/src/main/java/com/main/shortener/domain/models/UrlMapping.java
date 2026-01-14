@@ -6,18 +6,25 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter @Setter
+@Builder
 @Table(name = "mappings")
 public class UrlMapping {
     @Column(unique=true)
     @Id @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
+    
     @Column(unique=true, nullable=false)
-    private String shortMapping;
+    private String code;
+    
     @Column(unique=false, nullable=false)
-    private String pointingUrl;
+    private String originalUrl;
+    
+    @Column(unique=false, nullable=false)
+    private Long userId;
 }

@@ -8,5 +8,5 @@ import com.main.shortener.domain.models.UrlMapping;
 
 
 public interface UrlMappingRepository extends JpaRepository<UrlMapping, Long> {
-    public Optional<UrlMapping> findByShortMapping(String shortMapping);
+    public Optional<UrlMapping> findByCode(String code);
 }

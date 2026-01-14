@@ -1,6 +1,7 @@
 package com.main.shortener.services;
 
 import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.main.shortener.domain.data.ShortenUrlRequest;
@@ -22,8 +23,16 @@ public class UrlMappingService {
         return repo.findAll();
     }
 
-    public UrlMapping findMappingById(Long id) {
+    public UrlMapping findById(Long id) {
         return repo.findById(id).orElseThrow(() -> new MappingNotFoundException("Mapping not found"));
+    }
+
+    public UrlMapping findByUserId(Long id) {
+        return repo.findByUserId(id).orElseThrow(() -> new MappingNotFoundException("Mapping not found"));
+    }
+
+    public UrlMapping findByCode(String code) {
+        return repo.findByCode(code).orElseThrow(() -> new MappingNotFoundException("Mapping not found"));
     }
     
     public UrlMapping createMapping(ShortenUrlRequest request) {
@@ -41,10 +50,10 @@ public class UrlMappingService {
     }
 
     @Transactional
-    public void updateMapping(UpdateMappingRequest request) {
+    public void updateMapping(Long id, UpdateMappingRequest request) {
         var mapping = repo.findById(request.getMappingId()).orElseThrow(() -> new MappingNotFoundException("Mapping not found"));
-        if (mapping.getOriginalUrl() != request.getOriginalUrl()) mapping.setOriginalUrl(request.getOriginalUrl());
-        if (mapping.getCode() != request.getCode()) mapping.setCode(request.getCode());
+        if (!mapping.getOriginalUrl().equals(request.getOriginalUrl())) mapping.setOriginalUrl(request.getOriginalUrl());
+        if (!mapping.getCode().equals(request.getCode())) mapping.setCode(request.getCode());
         repo.save(mapping);
     }
 

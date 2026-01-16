@@ -22,7 +22,7 @@ public class UrlMappingServiceTest {
     private UrlMappingService urlMappingService;
 
     @Test
-    public void shouldReturnMappingIfItExists() {
+    public void shouldAddMapping() {
         var mockMapping = Optional.of(new UrlMapping(1L, "a", "o", 1L));
         when(urlMappingRepository.findByUserId(1L)).thenReturn(mockMapping);
         var result = urlMappingService.findByUserId(1L);

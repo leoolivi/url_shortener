@@ -9,6 +9,16 @@
             "projectName": "shortener",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-RedirectorApplication<redirector>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.main.redirector.RedirectorApplication",
+            "projectName": "redirector",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }

@@ -8,6 +8,7 @@ import com.main.shortener.domain.data.ShortenUrlRequest;
 import com.main.shortener.domain.data.UpdateMappingRequest;
 import com.main.shortener.domain.models.UrlMapping;
 import com.main.shortener.exceptions.MappingNotFoundException;
+import com.main.shortener.messaging.RabbitProducer;
 import com.main.shortener.repositories.UrlMappingRepository;
 
 import jakarta.transaction.Transactional;
@@ -18,6 +19,7 @@ import lombok.AllArgsConstructor;
 public class UrlMappingService {
 
     private final UrlMappingRepository repo;
+    private final RabbitProducer producer;
 
     public List<UrlMapping> getMappings() {
         return repo.findAll();
@@ -42,6 +44,7 @@ public class UrlMappingService {
                             .userId(request.userId())
                             .build();
         repo.save(mapping);
+        producer.sendObject("demo.exchange", "demo.key", request);
         return mapping;
     }
 

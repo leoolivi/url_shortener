@@ -1,4 +1,4 @@
-package com.main.redirector.messaging;
+package com.main.redirector.services;
 
 import java.nio.charset.StandardCharsets;
 
@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.main.redirector.domain.data.CreateMappingRequest;
 import com.main.redirector.domain.models.UrlMapping;
-import com.main.redirector.services.UrlMappingService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +14,7 @@ import tools.jackson.databind.ObjectMapper;
 @Service
 @Slf4j
 @AllArgsConstructor
-public class RabbitConsumer {
+public class ConsumerService {
 
     private final UrlMappingService service;
 

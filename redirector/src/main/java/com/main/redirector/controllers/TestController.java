@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 
-
-
 @RestController
 @RequestMapping("/api/v1/test")
 @AllArgsConstructor

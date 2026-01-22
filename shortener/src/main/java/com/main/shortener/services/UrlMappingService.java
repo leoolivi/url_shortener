@@ -36,6 +36,7 @@ public class UrlMappingService {
     }
     
     public UrlMapping createMapping(ShortenUrlRequest request) {
+        repo.findByCode(request.code()).orElseThrow(() -> new MappingNotFoundException("Mapping not found"));
         var mapping = UrlMapping.builder()
                             .code(request.code())
                             .originalUrl(request.originalUrl())

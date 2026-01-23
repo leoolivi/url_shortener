@@ -16,6 +16,7 @@ import com.main.shortener.domain.data.ShortenUrlRequest;
 import com.main.shortener.domain.data.UpdateMappingRequest;
 import com.main.shortener.domain.models.UrlMapping;
 import com.main.shortener.services.UrlMappingService;
+import com.urlshortener.messaging.CreateMappingRequest;
 
 import lombok.AllArgsConstructor;
 
@@ -36,7 +37,7 @@ public class MainController {
     }
 
     @PostMapping("mappings")
-    public ResponseEntity<UrlMapping> createMapping(@RequestBody ShortenUrlRequest request) {
+    public ResponseEntity<UrlMapping> createMapping(@RequestBody CreateMappingRequest request) {
         return ResponseEntity.ok(service.createMapping(request));
     }
 

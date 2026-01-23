@@ -32,7 +32,7 @@ public class ConsumerService {
         log.info("Consumed message:  {}", message);
         var payload = mapper.convertValue(message.getPayload(), CreateMappingRequest.class);
         try {
-            var newMapping = service.createMapping(new ShortenUrlRequest(payload.code(), payload.originalUrl(), payload.userId()));
+            var newMapping = service.createMapping(new CreateMappingRequest(payload.code(), payload.originalUrl(), payload.userId()));
             var responsePayload = new MappingResponse(newMapping.getId(), newMapping.getOriginalUrl(), newMapping.getCode());
     
             var response = new MessageEnvelope<MappingResponse>();
@@ -69,7 +69,5 @@ public class ConsumerService {
             
             rabbitTemplate.convertAndSend("reply.gateway.exchange", "mapping.error", response);
         }
-        
-
     }
 }

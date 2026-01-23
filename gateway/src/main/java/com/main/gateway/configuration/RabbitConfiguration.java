@@ -21,6 +21,7 @@ public class RabbitConfiguration {
     private final String QUEUE_RESPONSE = "gateway.queue";
     private final String ROUTING_KEY = "mapping.response";
 
+
     @Bean
     public TopicExchange mainExchange() {
         return new TopicExchange(EXCHANGE);

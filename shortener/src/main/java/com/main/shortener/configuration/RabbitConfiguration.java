@@ -12,25 +12,30 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitConfiguration {
     
-    private final String EXCHANGE_NAME = "main.exchange";
+    private final String SHORTENER_EXCHANGE_NAME = "reply.shortener.exchange";    private final String GATEWAY_EXCHANGE_NAME = "gateway.exchange";
     private final String MAPPING_ROUTING_KEY = "mapping.*";
-    private final String MAPPING_QUEUE_NAME = "shortener.mapping";
+    private final String QUEUE_NAME = "shortener.queue";
 
     @Bean
-    public Queue mappingQueue() {
-        return new Queue(MAPPING_QUEUE_NAME);
+    public TopicExchange shortenerExchange() {
+        return new TopicExchange(SHORTENER_EXCHANGE_NAME);
     }
 
     @Bean
-    public TopicExchange exchange() {
-        return new TopicExchange(EXCHANGE_NAME);
+    public Queue gatewayQueue() {
+        return new Queue(QUEUE_NAME);
     }
 
     @Bean
-    Binding mappingBinding(Queue queue, TopicExchange exchange) {
+    public TopicExchange gatewayExchange() {
+        return new TopicExchange(GATEWAY_EXCHANGE_NAME);
+    }
+
+    @Bean
+    public Binding mappingBinding(Queue gatewayQueue, TopicExchange gatewayExchange) {
         return BindingBuilder
-                .bind(queue)
-                .to(exchange)
+                .bind(gatewayQueue)
+                .to(gatewayExchange)
                 .with(MAPPING_ROUTING_KEY);
     }
 

@@ -2,29 +2,36 @@ package com.main.gateway.services;
 
 import java.util.concurrent.CompletableFuture;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import com.main.gateway.domain.events.ResponseFromServicesEvent;
+import com.urlshortener.messaging.MessageEnvelope;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import tools.jackson.databind.ObjectMapper;
 
 @Service
-@Getter @Setter
-@NoArgsConstructor
+@Slf4j
 public class ResponseListener {
-    private CompletableFuture<ResponseFromServicesEvent> response = new CompletableFuture<>();
 
-    public ResponseFromServicesEvent waitResponse() {
-        var completed = response.join();
+    private CompletableFuture<MessageEnvelope<?>> response = new CompletableFuture<>();
+    
+    @Autowired
+    private ObjectMapper mapper;
+
+    public MessageEnvelope<?> waitComplete() {
+        var complete = response.join();
         response = new CompletableFuture<>();
-        return completed;
-    } 
+        return complete;
+    }
 
     @EventListener
-    public <T> void handleResponseEvent(ResponseFromServicesEvent event) {
-        response.complete(event);
+    public void onResponseEvent(ResponseFromServicesEvent event) {
+        var payload = event.getSource();
+        var message = mapper.convertValue(payload, MessageEnvelope.class);
+        log.info("Received event message: {}", message.getSource());
+        response.complete(message);
     }
 }

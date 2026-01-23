@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.main.shortener.domain.data.ShortenUrlRequest;
 import com.main.shortener.domain.data.UpdateMappingRequest;
 import com.main.shortener.domain.models.UrlMapping;
 import com.main.shortener.exceptions.MappingNotFoundException;
 import com.main.shortener.repositories.UrlMappingRepository;
+import com.urlshortener.messaging.CreateMappingRequest;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -35,8 +35,7 @@ public class UrlMappingService {
         return repo.findByCode(code).orElseThrow(() -> new MappingNotFoundException("Mapping not found"));
     }
     
-    public UrlMapping createMapping(ShortenUrlRequest request) {
-        repo.findByCode(request.code()).orElseThrow(() -> new MappingNotFoundException("Mapping not found"));
+    public UrlMapping createMapping(CreateMappingRequest request) {
         var mapping = UrlMapping.builder()
                             .code(request.code())
                             .originalUrl(request.originalUrl())

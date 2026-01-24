@@ -3,10 +3,9 @@ package com.main.shortener.services;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import com.main.shortener.domain.data.ShortenUrlRequest;
-import com.main.shortener.exceptions.MappingAlreadyExistException;
 import com.main.shortener.exceptions.MappingNotFoundException;
 import com.urlshortener.messaging.CreateMappingRequest;
 import com.urlshortener.messaging.ErrorResponse;
@@ -44,20 +43,18 @@ public class ConsumerService {
     
             rabbitTemplate.convertAndSend("reply.gateway.exchange", "mapping.response", response);
             log.info("Sent message:  {}", responsePayload);
-        } catch (MappingAlreadyExistException e) {
+        } catch (DataIntegrityViolationException e) { // Mapping Already Exists Exception
             var response = new MessageEnvelope<ErrorResponse>();
             response.setCorrelationId(message.getCorrelationId());
             response.setMessageType("MAPPING_ERROR");
             response.setSource("shortener");
             response.setTimestamp(System.currentTimeMillis());
-            response.setPayload(new ErrorResponse("MAPPING_ALREADY_EXISTS", e.getMessage()));
+            response.setPayload(new ErrorResponse("MAPPING_ALREADY_EXISTS", "Mapping already exists"));
 
             log.info("Sent message:  {}", response);
             
             rabbitTemplate.convertAndSend("reply.gateway.exchange", "mapping.error", response);
-        }
-
-        catch (MappingNotFoundException e) {
+        } catch (MappingNotFoundException e) {
             var response = new MessageEnvelope<ErrorResponse>();
             response.setCorrelationId(message.getCorrelationId());
             response.setMessageType("MAPPING_ERROR");

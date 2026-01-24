@@ -19,7 +19,7 @@ public class RabbitConfiguration {
 
     private final String REPLY_EXCHANGE = "reply.gateway.exchange";
     private final String QUEUE_RESPONSE = "gateway.queue";
-    private final String ROUTING_KEY = "mapping.response";
+    private final String ROUTING_KEY = "mapping.*";
 
 
     @Bean

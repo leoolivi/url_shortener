@@ -17,8 +17,10 @@ public class RabbitConfiguration {
     
     private final String EXCHANGE = "gateway.exchange";
 
-    private final String REPLY_EXCHANGE = "reply.shortener.exchange";
-    private final String QUEUE_RESPONSE = "gateway.queue";
+    private final String REPLY_SHORTENER_EXCHANGE = "reply.shortener.exchange";
+    private final String REPLY_REDIRECTOR_EXCHANGE = "reply.redirector.exchange";
+    private final String SHORTENER_QUEUE_RESPONSE = "reply.shortener.queue";
+    private final String REDIRECTOR_QUEUE_RESPONSE = "reply.redirector.queue";
     private final String ROUTING_KEY = "mapping.*";
 
 
@@ -28,20 +30,38 @@ public class RabbitConfiguration {
     }
 
     @Bean
-    public TopicExchange replyExchange() {
-        return new TopicExchange(REPLY_EXCHANGE);
+    public TopicExchange replyShortenerExchange() {
+        return new TopicExchange(REPLY_SHORTENER_EXCHANGE);
     }
 
     @Bean
-    public Queue replyShortenerMappingQueue() {
-        return new Queue(QUEUE_RESPONSE);
+    public TopicExchange replyRedirectorExchange() {
+        return new TopicExchange(REPLY_REDIRECTOR_EXCHANGE);
     }
 
     @Bean
-    public Binding replyShortenerMappingBinding(Queue replyShortenerMappingQueue, TopicExchange replyExchange) {
+    public Queue replyShortenerQueue() {
+        return new Queue(SHORTENER_QUEUE_RESPONSE);
+    }
+
+    @Bean
+    public Queue replyRedirectorQueue() {
+        return new Queue(REDIRECTOR_QUEUE_RESPONSE);
+    }
+
+    @Bean
+    public Binding replyShortenerMappingBinding(Queue replyShortenerQueue, TopicExchange replyShortenerExchange) {
         return BindingBuilder
-                .bind(replyShortenerMappingQueue)
-                .to(replyExchange)
+                .bind(replyShortenerQueue)
+                .to(replyShortenerExchange)
+                .with(ROUTING_KEY);
+    }
+
+    @Bean
+    public Binding replyRedirectorMappingBinding(Queue replyRedirectorQueue, TopicExchange replyRedirectorExchange) {
+        return BindingBuilder
+                .bind(replyRedirectorQueue)
+                .to(replyRedirectorExchange)
                 .with(ROUTING_KEY);
     }
 

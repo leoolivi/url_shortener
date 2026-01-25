@@ -1,8 +1,8 @@
 package com.urlshortener.messaging;
 
-public record MappingResponse(
+public record UpdateMappingRequest (
     Long id,
     String originalUrl,
     String code,
     Long userId
-) implements Response {}
+) {}

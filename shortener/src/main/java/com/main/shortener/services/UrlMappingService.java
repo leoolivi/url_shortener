@@ -2,13 +2,15 @@ package com.main.shortener.services;
 
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import com.main.shortener.domain.data.UpdateMappingRequest;
 import com.main.shortener.domain.models.UrlMapping;
+import com.main.shortener.exceptions.MappingAlreadyExistException;
 import com.main.shortener.exceptions.MappingNotFoundException;
 import com.main.shortener.repositories.UrlMappingRepository;
 import com.urlshortener.messaging.CreateMappingRequest;
+import com.urlshortener.messaging.UpdateMappingRequest;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -41,20 +43,33 @@ public class UrlMappingService {
                             .originalUrl(request.originalUrl())
                             .userId(request.userId())
                             .build();
-        repo.save(mapping);
+        try {
+            repo.save(mapping);
+        } catch (DataIntegrityViolationException e) {
+            throw new MappingAlreadyExistException("Mapping already exists");
+        }
         return mapping;
     }
 
-    public void deleteMapping(Long id) {
+    public UrlMapping deleteMappingById(Long id) {
+        var mapping = repo.findById(id).orElseThrow(() -> new MappingNotFoundException("Mapping not found"));
         repo.deleteById(id);
+        return mapping;
+    }
+
+    public UrlMapping deleteMappingByCode(String code) {
+        var mapping = repo.findByCode(code).orElseThrow(() -> new MappingNotFoundException("Mapping not found"));
+        repo.deleteByCode(code);
+        return mapping;
     }
 
     @Transactional
-    public void updateMapping(Long id, UpdateMappingRequest request) {
-        var mapping = repo.findById(request.getMappingId()).orElseThrow(() -> new MappingNotFoundException("Mapping not found"));
-        if (!mapping.getOriginalUrl().equals(request.getOriginalUrl())) mapping.setOriginalUrl(request.getOriginalUrl());
-        if (!mapping.getCode().equals(request.getCode())) mapping.setCode(request.getCode());
+    public UrlMapping updateMapping(UpdateMappingRequest request) {
+        var mapping = repo.findById(request.id()).orElseThrow(() -> new MappingNotFoundException("Mapping not found"));
+        if (!mapping.getOriginalUrl().equals(request.originalUrl())) mapping.setOriginalUrl(request.originalUrl());
+        if (!mapping.getCode().equals(request.code())) mapping.setCode(request.code());
         repo.save(mapping);
+        return mapping;
     }
 
 }

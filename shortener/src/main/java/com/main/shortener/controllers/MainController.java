@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.main.shortener.domain.data.ShortenUrlRequest;
-import com.main.shortener.domain.data.UpdateMappingRequest;
 import com.main.shortener.domain.models.UrlMapping;
 import com.main.shortener.services.UrlMappingService;
 import com.urlshortener.messaging.CreateMappingRequest;
+import com.urlshortener.messaging.UpdateMappingRequest;
 
 import lombok.AllArgsConstructor;
 
@@ -43,13 +42,13 @@ public class MainController {
 
     @DeleteMapping("mappings/{id}")
     public ResponseEntity<?> deleteMapping(@PathVariable Long id) {
-        service.deleteMapping(id);
+        service.deleteMappingById(id);
         return ResponseEntity.ok("Mapping deleted successfully");
     }
 
     @PutMapping("mappings/{id}")
     public ResponseEntity<?> updateMapping(@PathVariable Long id, @RequestBody UpdateMappingRequest request) {
-        service.updateMapping(id, request);
+        service.updateMapping(request);
         return ResponseEntity.ok("Mapping updated successfully");
     }
     

@@ -12,7 +12,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitConfiguration {
     
-    private final String SHORTENER_EXCHANGE_NAME = "reply.shortener.exchange";    private final String GATEWAY_EXCHANGE_NAME = "gateway.exchange";
+    private final String SHORTENER_EXCHANGE_NAME = "reply.shortener.exchange";
+        
+    private final String GATEWAY_EXCHANGE_NAME = "gateway.exchange";
     private final String MAPPING_ROUTING_KEY = "mapping.*";
     private final String QUEUE_NAME = "shortener.queue";
 

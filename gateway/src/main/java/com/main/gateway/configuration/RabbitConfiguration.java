@@ -19,9 +19,14 @@ public class RabbitConfiguration {
 
     private final String REPLY_SHORTENER_EXCHANGE = "reply.shortener.exchange";
     private final String REPLY_REDIRECTOR_EXCHANGE = "reply.redirector.exchange";
+    private final String REPLY_AUTH_EXCHANGE = "reply.auth.exchange";
+
     private final String SHORTENER_QUEUE_RESPONSE = "reply.shortener.queue";
+    private final String AUTH_QUEUE_RESPONSE = "reply.auth.queue";
     private final String REDIRECTOR_QUEUE_RESPONSE = "reply.redirector.queue";
-    private final String ROUTING_KEY = "mapping.*";
+    
+    private final String MAPPING_ROUTING_KEY = "mapping.*";
+    private final String AUTH_ROUTING_KEY = "auth.*";
 
 
     @Bean
@@ -35,6 +40,11 @@ public class RabbitConfiguration {
     }
 
     @Bean
+    public TopicExchange replyAuthExchange() {
+        return new TopicExchange(REPLY_AUTH_EXCHANGE);
+    }
+
+    @Bean
     public TopicExchange replyRedirectorExchange() {
         return new TopicExchange(REPLY_REDIRECTOR_EXCHANGE);
     }
@@ -42,6 +52,11 @@ public class RabbitConfiguration {
     @Bean
     public Queue replyShortenerQueue() {
         return new Queue(SHORTENER_QUEUE_RESPONSE);
+    }
+
+    @Bean
+    public Queue replyAuthQueue() {
+        return new Queue(AUTH_QUEUE_RESPONSE);
     }
 
     @Bean
@@ -54,7 +69,7 @@ public class RabbitConfiguration {
         return BindingBuilder
                 .bind(replyShortenerQueue)
                 .to(replyShortenerExchange)
-                .with(ROUTING_KEY);
+                .with(MAPPING_ROUTING_KEY);
     }
 
     @Bean
@@ -62,7 +77,15 @@ public class RabbitConfiguration {
         return BindingBuilder
                 .bind(replyRedirectorQueue)
                 .to(replyRedirectorExchange)
-                .with(ROUTING_KEY);
+                .with(MAPPING_ROUTING_KEY);
+    }
+
+    @Bean
+    public Binding replyAuthBinding(Queue replyAuthQueue, TopicExchange replyAuthExchange) {
+        return BindingBuilder
+                .bind(replyAuthQueue)
+                .to(replyAuthExchange)
+                .with(AUTH_ROUTING_KEY);
     }
 
     @Bean

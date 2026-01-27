@@ -29,6 +29,16 @@
             "projectName": "gateway",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-AuthApplication<auth>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.main.auth.AuthApplication",
+            "projectName": "auth",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }

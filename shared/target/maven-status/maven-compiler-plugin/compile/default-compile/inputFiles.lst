@@ -1,0 +1,11 @@
+/Users/olivi/Code/url_shortener/shared/src/main/java/com/urlshortener/messaging/CreateMappingRequest.java
+/Users/olivi/Code/url_shortener/shared/src/main/java/com/urlshortener/messaging/DeleteMappingRequest.java
+/Users/olivi/Code/url_shortener/shared/src/main/java/com/urlshortener/messaging/ErrorResponse.java
+/Users/olivi/Code/url_shortener/shared/src/main/java/com/urlshortener/messaging/GetAllMappingsRequest.java
+/Users/olivi/Code/url_shortener/shared/src/main/java/com/urlshortener/messaging/GetMappingRequest.java
+/Users/olivi/Code/url_shortener/shared/src/main/java/com/urlshortener/messaging/MappingResponse.java
+/Users/olivi/Code/url_shortener/shared/src/main/java/com/urlshortener/messaging/MessageEnvelope.java
+/Users/olivi/Code/url_shortener/shared/src/main/java/com/urlshortener/messaging/RedirectRequest.java
+/Users/olivi/Code/url_shortener/shared/src/main/java/com/urlshortener/messaging/RedirectResponse.java
+/Users/olivi/Code/url_shortener/shared/src/main/java/com/urlshortener/messaging/Response.java
+/Users/olivi/Code/url_shortener/shared/src/main/java/com/urlshortener/messaging/UpdateMappingRequest.java

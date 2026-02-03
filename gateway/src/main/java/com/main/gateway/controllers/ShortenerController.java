@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.main.gateway.services.ProducerService;
 import com.main.gateway.services.ResponseListener;
-import com.urlshortener.messaging.CreateMappingRequest;
-import com.urlshortener.messaging.DeleteMappingRequest;
-import com.urlshortener.messaging.GetAllMappingsRequest;
-import com.urlshortener.messaging.GetMappingRequest;
-import com.urlshortener.messaging.MessageEnvelope;
-import com.urlshortener.messaging.UpdateMappingRequest;
+import com.urlshortener.data.CreateMappingRequest;
+import com.urlshortener.data.DeleteMappingRequest;
+import com.urlshortener.data.GetAllMappingsRequest;
+import com.urlshortener.data.GetMappingRequest;
+import com.urlshortener.data.MessageEnvelope;
+import com.urlshortener.data.UpdateMappingRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

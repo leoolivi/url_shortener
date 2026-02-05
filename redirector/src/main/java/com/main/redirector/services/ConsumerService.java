@@ -6,13 +6,13 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import com.main.redirector.exceptions.UnknownRequestPayloadType;
-import com.urlshortener.messaging.CreateMappingRequest;
-import com.urlshortener.messaging.DeleteMappingRequest;
-import com.urlshortener.messaging.GetMappingRequest;
-import com.urlshortener.messaging.MessageEnvelope;
-import com.urlshortener.messaging.RedirectRequest;
-import com.urlshortener.messaging.RedirectResponse;
-import com.urlshortener.messaging.UpdateMappingRequest;
+import com.urlshortener.data.CreateMappingRequest;
+import com.urlshortener.data.DeleteMappingRequest;
+import com.urlshortener.data.GetMappingRequest;
+import com.urlshortener.data.MessageEnvelope;
+import com.urlshortener.data.RedirectRequest;
+import com.urlshortener.data.RedirectResponse;
+import com.urlshortener.data.UpdateMappingRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

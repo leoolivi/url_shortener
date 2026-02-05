@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.main.auth.domain.models.AppUser;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -34,11 +36,11 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(AppUser userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+    public String generateToken(Map<String, Object> extraClaims, AppUser userDetails) {
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
@@ -48,12 +50,14 @@ public class JwtService {
 
     private String buildToken(
             Map<String, Object> extraClaims,
-            UserDetails userDetails,
+            AppUser userDetails,
             long expiration
     ) {
         return Jwts
                 .builder()
                 .claims(extraClaims)
+                .claim("id", userDetails.getId())
+                .claim("role", userDetails.getRole())
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiration))
@@ -82,6 +86,8 @@ public class JwtService {
                 .parseSignedClaims(token)
                 .getPayload();
     }
+
+    // TODO: Switch to more secure RS256
 
     private SecretKey getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);

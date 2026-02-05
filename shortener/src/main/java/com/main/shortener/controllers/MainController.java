@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.main.shortener.domain.models.UrlMapping;
 import com.main.shortener.services.UrlMappingService;
-import com.urlshortener.messaging.CreateMappingRequest;
-import com.urlshortener.messaging.UpdateMappingRequest;
+import com.urlshortener.data.CreateMappingRequest;
+import com.urlshortener.data.UpdateMappingRequest;
 
 import lombok.AllArgsConstructor;
 

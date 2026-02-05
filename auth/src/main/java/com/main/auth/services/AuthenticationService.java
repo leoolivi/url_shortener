@@ -3,24 +3,24 @@ package com.main.auth.services;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.main.auth.domain.models.AppUser;
-import com.urlshortener.messaging.AuthenticateRequest;
-import com.urlshortener.messaging.AuthenticateResponse;
-import com.urlshortener.messaging.RegisterRequest;
+import com.urlshortener.data.AuthenticateRequest;
+import com.urlshortener.data.AuthenticateResponse;
+import com.urlshortener.data.RegisterRequest;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final AppUserService detailsService;
-    private final PasswordEncoder passwordEncoder;
 
     public AuthenticateResponse authenticate(AuthenticateRequest request) {
         var auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
@@ -37,6 +37,7 @@ public class AuthenticationService {
                         .isAuthenticated(true)
                         .build();
         }
+        log.info("Unsuccesfully login happened");
         return AuthenticateResponse.builder()
             .email(request.email())
             .isAuthenticated(false)
@@ -44,15 +45,16 @@ public class AuthenticationService {
     }
 
     public AuthenticateResponse register(RegisterRequest request) {
-        var newUser = detailsService.createUser(new RegisterRequest(request.email(), passwordEncoder.encode(request.password()), request.role()));
+        var newUser = detailsService.createUser(new RegisterRequest(request.email(), request.password(), request.role()));
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
         String token = jwtService.generateToken(newUser);
+        log.info("user created successfully");
         return AuthenticateResponse.builder()
+                    .id(newUser.getId())
                     .email(request.email())
                     .token(token)
                     .role(newUser.getRole())
                     .isAuthenticated(true)
                     .build();
-
     }
 } 

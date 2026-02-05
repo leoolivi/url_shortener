@@ -11,16 +11,4 @@ public class ApplicationConfiguration {
     public WebClient webClient() {
         return WebClient.create("http://localhost:3002");
     }
-
-    /* @Bean
-    public UserDetailsService userDetailsService() {
-        return username -> { 
-            var detailsRes = webClient().post()
-            .uri("/api/v1/auth/user-details")
-            .bodyValue(username)
-            .retrieve()
-            .bodyToMono(UserDetails.class);
-            return detailsRes.block();
-        };
-    } */
 }

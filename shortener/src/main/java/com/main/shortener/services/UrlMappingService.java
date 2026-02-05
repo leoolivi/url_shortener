@@ -9,8 +9,8 @@ import com.main.shortener.domain.models.UrlMapping;
 import com.main.shortener.exceptions.MappingAlreadyExistException;
 import com.main.shortener.exceptions.MappingNotFoundException;
 import com.main.shortener.repositories.UrlMappingRepository;
-import com.urlshortener.messaging.CreateMappingRequest;
-import com.urlshortener.messaging.UpdateMappingRequest;
+import com.urlshortener.data.CreateMappingRequest;
+import com.urlshortener.data.UpdateMappingRequest;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

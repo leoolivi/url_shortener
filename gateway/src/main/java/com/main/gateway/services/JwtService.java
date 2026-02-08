@@ -1,14 +1,16 @@
 package com.main.gateway.services;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.security.autoconfigure.SecurityProperties.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import com.urlshortener.data.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -29,7 +31,18 @@ public class JwtService {
 
     public User extractUser(String token) {
         Claims claims = extractAllClaims(token);
-        return claims.get("details", User.class);
+        Map<String, Object> detailsMap = claims.get("details", Map.class);
+        
+        if (detailsMap == null) {
+            throw new IllegalArgumentException("User details not found in token");
+        }
+        
+        Long id = ((Number) detailsMap.get("id")).longValue();
+        String email = (String) detailsMap.get("email");
+        String password = (String) detailsMap.get("password");
+        String role = (String) detailsMap.get("role");
+        
+        return new User(id, email, password, role);
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -57,7 +70,7 @@ public class JwtService {
     private Claims extractAllClaims(String token) {
         return Jwts
                 .parser()
-                .decryptWith(getSignInKey())
+                .verifyWith(getSignInKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();

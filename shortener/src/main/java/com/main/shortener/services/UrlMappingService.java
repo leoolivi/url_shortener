@@ -37,11 +37,11 @@ public class UrlMappingService {
         return repo.findByCode(code).orElseThrow(() -> new MappingNotFoundException("Mapping not found"));
     }
     
-    public UrlMapping createMapping(CreateMappingRequest request) {
+    public UrlMapping createMapping(CreateMappingRequest request, Long userId) {
         var mapping = UrlMapping.builder()
                             .code(request.code())
                             .originalUrl(request.originalUrl())
-                            .userId(request.userId())
+                            .userId(userId)
                             .build();
         try {
             repo.save(mapping);

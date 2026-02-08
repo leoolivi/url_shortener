@@ -36,8 +36,8 @@ public class MainController {
     }
 
     @PostMapping("mappings")
-    public ResponseEntity<UrlMapping> createMapping(@RequestBody CreateMappingRequest request) {
-        return ResponseEntity.ok(service.createMapping(request));
+    public ResponseEntity<UrlMapping> createMapping(@RequestBody CreateMappingRequest request, @PathVariable Long id) {
+        return ResponseEntity.ok(service.createMapping(request, id));
     }
 
     @DeleteMapping("mappings/{id}")

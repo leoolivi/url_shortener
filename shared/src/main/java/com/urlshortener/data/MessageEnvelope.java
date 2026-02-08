@@ -16,6 +16,7 @@ public class MessageEnvelope<T> {
     private String source;
     private long timestamp;
     private T payload;
+    private String token;
     private Class<T> payloadType;
 
     public MessageEnvelope(String correlationId, String messageType, T payload, String source, long timestamp) {

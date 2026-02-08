@@ -9,15 +9,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor(force = true)
 public class User implements UserDetails{
-    private final Long id;
-    private final String email;
-    private final String password;
-    private final String role;
-    
+    private Long id;
+    private String email;
+    private String password;
+    private String role;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role));

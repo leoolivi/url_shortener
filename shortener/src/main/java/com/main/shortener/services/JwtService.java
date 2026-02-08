@@ -1,7 +1,6 @@
-package com.main.auth.services;
+package com.main.shortener.services;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.main.auth.domain.models.AppUser;
 import com.urlshortener.data.User;
 
 import io.jsonwebtoken.Claims;
@@ -21,7 +19,6 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
-    
     @Value("${security.jwt.secret-key}")
     private String secretKey;
 
@@ -32,39 +29,32 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
+    public User extractUser(String token) {
+        if (token == null) {
+            throw new IllegalArgumentException("Token must not be null");
+        }
+        Claims claims = extractAllClaims(token);
+        Map<String, Object> detailsMap = claims.get("details", Map.class);
+        
+        if (detailsMap == null) {
+            throw new IllegalArgumentException("User details not found in token");
+        }
+        
+        Long id = ((Number) detailsMap.get("id")).longValue();
+        String email = (String) detailsMap.get("email");
+        String password = (String) detailsMap.get("password");
+        String role = (String) detailsMap.get("role");
+        
+        return new User(id, email, password, role);
+    }
+
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(AppUser userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
-    }
-
-    public String generateToken(Map<String, Object> extraClaims, AppUser userDetails) {
-        return buildToken(extraClaims, userDetails, jwtExpiration);
-    }
-
     public long getExpirationTime() {
         return jwtExpiration;
-    }
-
-    private String buildToken(
-            Map<String, Object> extraClaims,
-            AppUser userDetails,
-            long expiration
-    ) {
-        return Jwts
-                .builder()
-                .claims(extraClaims)
-                .claim("id", userDetails.getId())
-                .claim("role", userDetails.getRole())
-                .claim("details", new User(userDetails.getId(), userDetails.getEmail(), userDetails.getPassword(), userDetails.getRole()))
-                .subject(userDetails.getUsername())
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSignInKey())
-                .compact();
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
@@ -95,5 +85,4 @@ public class JwtService {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
-
 }

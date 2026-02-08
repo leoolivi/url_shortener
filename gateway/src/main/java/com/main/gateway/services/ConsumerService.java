@@ -5,7 +5,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import com.main.gateway.domain.events.ResponseFromServicesEvent;
-import com.urlshortener.data.MappingResponse;
 import com.urlshortener.data.MessageEnvelope;
 import com.urlshortener.data.RedirectResponse;
 
@@ -20,7 +19,7 @@ public class ConsumerService {
     private final ApplicationEventPublisher publisher;
     
     @RabbitListener(queues = "reply.shortener.queue")
-    public void handleResponseFromShortener(MessageEnvelope<MappingResponse> message) {
+    public void handleResponseFromShortener(MessageEnvelope<?> message) {
         var event = new ResponseFromServicesEvent(message, "Returned mapping", message.getMessageType());
         log.info("Publishing event: {}", event);
         publisher.publishEvent(event);

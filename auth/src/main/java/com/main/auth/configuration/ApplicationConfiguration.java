@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.main.auth.repositories.AppUserRepository;
+import com.urlshortener.security.JwtSigner;
 
 import lombok.AllArgsConstructor;
 
@@ -43,5 +44,10 @@ public class ApplicationConfiguration {
         var provider = new DaoAuthenticationProvider(userDetailsService(repo));
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
+    }
+
+    @Bean
+    public JwtSigner jwtSigner() {
+        return new JwtSigner();
     }
 }

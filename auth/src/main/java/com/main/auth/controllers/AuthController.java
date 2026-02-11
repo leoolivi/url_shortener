@@ -25,14 +25,14 @@ public class AuthController {
     private final AuthenticationService authService;
 
     @PostMapping("login")
-    public AuthenticateResponse login(@RequestBody AuthenticateRequest request) {
+    public AuthenticateResponse login(@RequestBody AuthenticateRequest request) throws Exception {
         var response = authService.authenticate(request);
         log.info("Authenticated user");
         return response;
     }
     
     @PostMapping("register") 
-    public AuthenticateResponse register(@RequestBody RegisterRequest request) {
+    public AuthenticateResponse register(@RequestBody RegisterRequest request) throws Exception {
         var response = authService.register(request);
         return response;
     }

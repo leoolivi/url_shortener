@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.main.gateway.security.JwtAuthenticationToken;
 import com.main.gateway.services.ProducerService;
 import com.main.gateway.services.ResponseListener;
 import com.urlshortener.data.CreateMappingRequest;
@@ -22,6 +21,7 @@ import com.urlshortener.data.GetAllMappingsRequest;
 import com.urlshortener.data.GetMappingRequest;
 import com.urlshortener.data.MessageEnvelope;
 import com.urlshortener.data.UpdateMappingRequest;
+import com.urlshortener.security.JwtAuthenticationToken;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

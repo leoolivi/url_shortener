@@ -1,4 +1,4 @@
-package com.main.gateway.security;
+package com.urlshortener.security;
 
 import java.util.Collection;
 
@@ -22,6 +22,7 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken {
         super(auth);
         this.principal = details;
         this.token = token;
+        super.setAuthenticated(true);
     }    
 
     @Override

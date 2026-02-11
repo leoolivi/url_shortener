@@ -21,6 +21,7 @@ import com.urlshortener.data.MappingResponse;
 import com.urlshortener.data.MessageEnvelope;
 import com.urlshortener.data.UpdateMappingRequest;
 import com.urlshortener.data.User;
+import com.urlshortener.security.JwtVerifier;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,15 +36,15 @@ public class ConsumerService {
     private final UrlMappingService service;
     private final RabbitTemplate rabbitTemplate;
     private final ObjectMapper mapper;
-    private final JwtService jwtService;
+    private final JwtVerifier jwtVerifier;
     
     @RabbitHandler
     public void handleMessage(MessageEnvelope<?> message) {
         log.info("Consumed message:  {}", message);
         List<MappingResponse> responsePayload = new ArrayList<>();
-        User userDetails = jwtService.extractUser(message.getToken());
         
         try {
+            User userDetails = jwtVerifier.extractUser(message.getToken());
             if (message.getPayloadType().equals(CreateMappingRequest.class)) {
                 var payload = mapper.convertValue(message.getPayload(), CreateMappingRequest.class);
                 var newMapping = service.createMapping(new CreateMappingRequest(payload.originalUrl(), payload.code()), userDetails.getId());
@@ -105,7 +106,41 @@ public class ConsumerService {
                 
                 rabbitTemplate.convertAndSend("reply.shortener.exchange", "mapping.error", response);
             } catch (UnknownRequestPayloadType e) {
-                log.info(e.getMessage());
+                var response = new MessageEnvelope<ErrorResponse>();
+                response.setCorrelationId(message.getCorrelationId());
+                response.setMessageType("AUTH_ERROR");
+                response.setSource("shortener");
+                response.setToken(message.getToken());
+                response.setTimestamp(System.currentTimeMillis());
+                response.setPayload(new ErrorResponse("UNKNOWN_REQUEST_PAYLOAD_TYPE", e.getMessage()));
+    
+                log.info("Sent message:  {}", response);
+                
+                rabbitTemplate.convertAndSend("reply.shortener.exchange", "auth.error", response);
+            } catch (IllegalArgumentException e) {
+                var response = new MessageEnvelope<ErrorResponse>();
+                response.setCorrelationId(message.getCorrelationId());
+                response.setMessageType("AUTH_ERROR");
+                response.setSource("shortener");
+                response.setToken(message.getToken());
+                response.setTimestamp(System.currentTimeMillis());
+                response.setPayload(new ErrorResponse("ILLEGAL_ARGUMENT", e.getMessage()));
+    
+                log.info("Sent message:  {}", response);
+                
+                rabbitTemplate.convertAndSend("reply.shortener.exchange", "auth.error", response);
+            } catch (Exception e) {
+                var response = new MessageEnvelope<ErrorResponse>();
+                response.setCorrelationId(message.getCorrelationId());
+                response.setMessageType("SERVER_ERROR");
+                response.setSource("shortener");
+                response.setToken(message.getToken());
+                response.setTimestamp(System.currentTimeMillis());
+                response.setPayload(new ErrorResponse("GENERAL_ERROR", e.getMessage()));
+    
+                log.info("Sent message:  {}", response);
+                
+                rabbitTemplate.convertAndSend("reply.shortener.exchange", "general.error", response);
             }
     }
 }

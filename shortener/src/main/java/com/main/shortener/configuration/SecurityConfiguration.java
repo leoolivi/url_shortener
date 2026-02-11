@@ -15,6 +15,7 @@ public class SecurityConfiguration {
         http
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.disable())
+            .anonymous(anon -> anon.disable())
             .authorizeHttpRequests(
                 auth -> auth.anyRequest().permitAll()
             )

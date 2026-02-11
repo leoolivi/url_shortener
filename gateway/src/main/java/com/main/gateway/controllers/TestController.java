@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.main.gateway.security.JwtAuthenticationToken;
+import com.urlshortener.data.User;
 
 
 @RestController
@@ -19,8 +19,8 @@ public class TestController {
     }
 
     @GetMapping("me")
-    public ResponseEntity<?> me(@AuthenticationPrincipal JwtAuthenticationToken authentication) {
-        return ResponseEntity.ok(authentication);
+    public ResponseEntity<?> me(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(user);
     }
     
 }

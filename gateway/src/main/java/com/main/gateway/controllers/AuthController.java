@@ -9,6 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.urlshortener.data.AuthenticateRequest;
 import com.urlshortener.data.AuthenticateResponse;
+import com.urlshortener.data.RegisterRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,19 @@ public class AuthController {
         );        
         return webClient.post()
             .uri("/api/v1/auth/login")
+            .bodyValue(request)
+            .retrieve()
+            .bodyToMono(AuthenticateResponse.class)
+            .map(response -> ResponseEntity.ok(response));
+    }
+
+    @PostMapping("register")
+    public Mono<ResponseEntity<?>> login(@RequestBody RegisterRequest request) {
+        log.info(
+            "sending request {}", request
+        );        
+        return webClient.post()
+            .uri("/api/v1/auth/register")
             .bodyValue(request)
             .retrieve()
             .bodyToMono(AuthenticateResponse.class)

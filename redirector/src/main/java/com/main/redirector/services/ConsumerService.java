@@ -30,8 +30,7 @@ public class ConsumerService {
 
     @RabbitHandler
     public void handleMessage(MessageEnvelope<?> message) {
-        log.info("Consumed message:  {}", message);
-        RedirectResponse responsePayload = new RedirectResponse(null, null);
+        log.info("Consumed message:  {}", message); 
         
         try {
             if (message.getPayloadType().equals(CreateMappingRequest.class)) {
@@ -46,20 +45,20 @@ public class ConsumerService {
             } else if (message.getPayloadType().equals(RedirectRequest.class)) {
                 var payload = mapper.convertValue(message.getPayload(), GetMappingRequest.class);
                 var originalUrl = service.getOriginalUrl(payload.code());
-                responsePayload = new RedirectResponse(payload.code(), originalUrl);
+                RedirectResponse responsePayload = new RedirectResponse(payload.code(), originalUrl);
+                var response = new MessageEnvelope<RedirectResponse>();
+                response.setCorrelationId(message.getCorrelationId());
+                response.setMessageType("MAPPING_REDIRECT");
+                response.setSource("shortener");
+                response.setTimestamp(System.currentTimeMillis());
+                response.setPayload(responsePayload);
+        
+                rabbitTemplate.convertAndSend("reply.redirector.exchange", "mapping.redirect", response);
+                log.info("Sent message:  {}", responsePayload);
             } else {
                 throw new UnknownRequestPayloadType("Unknown request payload type.");
             }
             
-            var response = new MessageEnvelope<RedirectResponse>();
-            response.setCorrelationId(message.getCorrelationId());
-            response.setMessageType("MAPPING_REDIRECT");
-            response.setSource("shortener");
-            response.setTimestamp(System.currentTimeMillis());
-            response.setPayload(responsePayload);
-    
-            rabbitTemplate.convertAndSend("reply.redirector.exchange", "mapping.redirect", response);
-            log.info("Sent message:  {}", responsePayload);
 
             } catch (RuntimeException e) {
                 log.error(e.getMessage());

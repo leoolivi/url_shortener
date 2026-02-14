@@ -38,7 +38,7 @@ public class AuthController {
     }
 
     @PostMapping("register")
-    public Mono<ResponseEntity<?>> login(@RequestBody RegisterRequest request) {
+    public Mono<ResponseEntity<?>> register(@RequestBody RegisterRequest request) {
         log.info(
             "sending request {}", request
         );        

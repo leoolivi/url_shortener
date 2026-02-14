@@ -1,6 +1,7 @@
 package com.urlshortener.data;
 
 public record ErrorResponse (
-    String errorCode,
+    String error,
     String message
-) {}
+) {
+}

@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.main.gateway.services.ProducerService;
 import com.main.gateway.services.ResponseListener;
-import com.urlshortener.messaging.MessageEnvelope;
-import com.urlshortener.messaging.RedirectRequest;
+import com.urlshortener.data.MessageEnvelope;
+import com.urlshortener.data.RedirectRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

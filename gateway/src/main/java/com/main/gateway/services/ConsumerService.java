@@ -5,9 +5,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import com.main.gateway.domain.events.ResponseFromServicesEvent;
-import com.urlshortener.messaging.MappingResponse;
-import com.urlshortener.messaging.MessageEnvelope;
-import com.urlshortener.messaging.RedirectResponse;
+import com.urlshortener.data.MessageEnvelope;
+import com.urlshortener.data.RedirectResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +19,7 @@ public class ConsumerService {
     private final ApplicationEventPublisher publisher;
     
     @RabbitListener(queues = "reply.shortener.queue")
-    public void handleResponseFromShortener(MessageEnvelope<MappingResponse> message) {
+    public void handleResponseFromShortener(MessageEnvelope<?> message) {
         var event = new ResponseFromServicesEvent(message, "Returned mapping", message.getMessageType());
         log.info("Publishing event: {}", event);
         publisher.publishEvent(event);
@@ -30,6 +29,13 @@ public class ConsumerService {
     public void handleResponseFromRedirector(MessageEnvelope<RedirectResponse> message) {
         var event = new ResponseFromServicesEvent(message, "Redirected to", message.getPayload().toString());
         log.info("Publishing event: {}", event);
+        publisher.publishEvent(event);
+    }
+
+    @RabbitListener(queues = "reply.auth.queue")
+    public void handleResponseFromAuth(MessageEnvelope<?> message) {
+        var event = new ResponseFromServicesEvent(message, "Auth response", message.getPayload().toString());
+        log.info("Message from auth. Publishing event: {}", event);
         publisher.publishEvent(event);
     }
 

@@ -19,9 +19,11 @@ public class RabbitConfiguration {
 
     private final String REPLY_SHORTENER_EXCHANGE = "reply.shortener.exchange";
     private final String REPLY_REDIRECTOR_EXCHANGE = "reply.redirector.exchange";
+
     private final String SHORTENER_QUEUE_RESPONSE = "reply.shortener.queue";
     private final String REDIRECTOR_QUEUE_RESPONSE = "reply.redirector.queue";
-    private final String ROUTING_KEY = "mapping.*";
+    
+    private final String MAPPING_ROUTING_KEY = "mapping.*";
 
 
     @Bean
@@ -54,7 +56,7 @@ public class RabbitConfiguration {
         return BindingBuilder
                 .bind(replyShortenerQueue)
                 .to(replyShortenerExchange)
-                .with(ROUTING_KEY);
+                .with(MAPPING_ROUTING_KEY);
     }
 
     @Bean
@@ -62,7 +64,7 @@ public class RabbitConfiguration {
         return BindingBuilder
                 .bind(replyRedirectorQueue)
                 .to(replyRedirectorExchange)
-                .with(ROUTING_KEY);
+                .with(MAPPING_ROUTING_KEY);
     }
 
     @Bean

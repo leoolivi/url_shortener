@@ -7,7 +7,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import com.main.gateway.domain.events.ResponseFromServicesEvent;
-import com.urlshortener.messaging.MessageEnvelope;
+import com.urlshortener.data.MessageEnvelope;
 
 import lombok.extern.slf4j.Slf4j;
 import tools.jackson.databind.ObjectMapper;

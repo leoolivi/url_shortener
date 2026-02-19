@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "PemUtil",
+            "request": "launch",
+            "mainClass": "com.urlshortener.utils.PemUtil",
+            "projectName": "shared"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-ShortenerApplication<shortener>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
@@ -29,6 +36,17 @@
             "projectName": "gateway",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-AuthApplication<auth>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.main.auth.AuthApplication",
+            "projectName": "auth",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=59494 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=auth"
         }
     ]
 }

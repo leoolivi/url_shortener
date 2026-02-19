@@ -12,14 +12,16 @@ import com.main.shortener.domain.models.UrlMapping;
 import com.main.shortener.exceptions.MappingAlreadyExistException;
 import com.main.shortener.exceptions.MappingNotFoundException;
 import com.main.shortener.exceptions.UnknownRequestPayloadType;
-import com.urlshortener.messaging.CreateMappingRequest;
-import com.urlshortener.messaging.DeleteMappingRequest;
-import com.urlshortener.messaging.ErrorResponse;
-import com.urlshortener.messaging.GetAllMappingsRequest;
-import com.urlshortener.messaging.GetMappingRequest;
-import com.urlshortener.messaging.MappingResponse;
-import com.urlshortener.messaging.MessageEnvelope;
-import com.urlshortener.messaging.UpdateMappingRequest;
+import com.urlshortener.data.CreateMappingRequest;
+import com.urlshortener.data.DeleteMappingRequest;
+import com.urlshortener.data.ErrorResponse;
+import com.urlshortener.data.GetAllMappingsRequest;
+import com.urlshortener.data.GetMappingRequest;
+import com.urlshortener.data.MappingResponse;
+import com.urlshortener.data.MessageEnvelope;
+import com.urlshortener.data.UpdateMappingRequest;
+import com.urlshortener.data.User;
+import com.urlshortener.security.JwtVerifier;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +36,7 @@ public class ConsumerService {
     private final UrlMappingService service;
     private final RabbitTemplate rabbitTemplate;
     private final ObjectMapper mapper;
+    private final JwtVerifier jwtVerifier;
     
     @RabbitHandler
     public void handleMessage(MessageEnvelope<?> message) {
@@ -41,9 +44,10 @@ public class ConsumerService {
         List<MappingResponse> responsePayload = new ArrayList<>();
         
         try {
+            User userDetails = jwtVerifier.extractUser(message.getToken());
             if (message.getPayloadType().equals(CreateMappingRequest.class)) {
                 var payload = mapper.convertValue(message.getPayload(), CreateMappingRequest.class);
-                var newMapping = service.createMapping(new CreateMappingRequest(payload.originalUrl(), payload.code(), payload.userId()));
+                var newMapping = service.createMapping(new CreateMappingRequest(payload.originalUrl(), payload.code()), userDetails.getId());
                 responsePayload.add(new MappingResponse(newMapping.getId(), newMapping.getOriginalUrl(), newMapping.getCode(), newMapping.getUserId()));
             } else if (message.getPayloadType().equals(DeleteMappingRequest.class)) {
                 var payload = mapper.convertValue(message.getPayload(), DeleteMappingRequest.class);
@@ -70,6 +74,7 @@ public class ConsumerService {
             response.setCorrelationId(message.getCorrelationId());
             response.setMessageType("MAPPING_RESPONSE");
             response.setSource("shortener");
+            response.setToken(message.getToken());
             response.setTimestamp(System.currentTimeMillis());
             response.setPayload(responsePayload);
     
@@ -81,6 +86,7 @@ public class ConsumerService {
                 response.setCorrelationId(message.getCorrelationId());
                 response.setMessageType("MAPPING_ERROR");
                 response.setSource("shortener");
+                response.setToken(message.getToken());
                 response.setTimestamp(System.currentTimeMillis());
                 response.setPayload(new ErrorResponse("MAPPING_ALREADY_EXISTS", "Mapping already exists"));
     
@@ -92,6 +98,7 @@ public class ConsumerService {
                 response.setCorrelationId(message.getCorrelationId());
                 response.setMessageType("MAPPING_ERROR");
                 response.setSource("shortener");
+                response.setToken(message.getToken());
                 response.setTimestamp(System.currentTimeMillis());
                 response.setPayload(new ErrorResponse("MAPPING_NOT_FOUND", e.getMessage()));
     
@@ -99,7 +106,41 @@ public class ConsumerService {
                 
                 rabbitTemplate.convertAndSend("reply.shortener.exchange", "mapping.error", response);
             } catch (UnknownRequestPayloadType e) {
-                log.info(e.getMessage());
+                var response = new MessageEnvelope<ErrorResponse>();
+                response.setCorrelationId(message.getCorrelationId());
+                response.setMessageType("AUTH_ERROR");
+                response.setSource("shortener");
+                response.setToken(message.getToken());
+                response.setTimestamp(System.currentTimeMillis());
+                response.setPayload(new ErrorResponse("UNKNOWN_REQUEST_PAYLOAD_TYPE", e.getMessage()));
+    
+                log.info("Sent message:  {}", response);
+                
+                rabbitTemplate.convertAndSend("reply.shortener.exchange", "auth.error", response);
+            } catch (IllegalArgumentException e) {
+                var response = new MessageEnvelope<ErrorResponse>();
+                response.setCorrelationId(message.getCorrelationId());
+                response.setMessageType("AUTH_ERROR");
+                response.setSource("shortener");
+                response.setToken(message.getToken());
+                response.setTimestamp(System.currentTimeMillis());
+                response.setPayload(new ErrorResponse("ILLEGAL_ARGUMENT", e.getMessage()));
+    
+                log.info("Sent message:  {}", response);
+                
+                rabbitTemplate.convertAndSend("reply.shortener.exchange", "auth.error", response);
+            } catch (Exception e) {
+                var response = new MessageEnvelope<ErrorResponse>();
+                response.setCorrelationId(message.getCorrelationId());
+                response.setMessageType("SERVER_ERROR");
+                response.setSource("shortener");
+                response.setToken(message.getToken());
+                response.setTimestamp(System.currentTimeMillis());
+                response.setPayload(new ErrorResponse("GENERAL_ERROR", e.getMessage()));
+    
+                log.info("Sent message:  {}", response);
+                
+                rabbitTemplate.convertAndSend("reply.shortener.exchange", "general.error", response);
             }
     }
 }

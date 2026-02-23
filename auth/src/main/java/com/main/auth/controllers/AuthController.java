@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.main.auth.services.AppUserService;
 import com.main.auth.services.AuthenticationService;
-import com.urlshortener.data.AuthenticateRequest;
-import com.urlshortener.data.AuthenticateResponse;
-import com.urlshortener.data.RegisterRequest;
+import com.urlshortener.data.request.auth.AuthenticateRequest;
+import com.urlshortener.data.request.auth.RegisterRequest;
+import com.urlshortener.data.response.auth.AuthenticateResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

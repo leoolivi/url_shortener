@@ -1,5 +1,7 @@
 package com.urlshortener.data.request.mapping;
 
-public interface MappingRequest {
+import com.urlshortener.data.Request;
+
+public interface MappingRequest extends Request {
     // Empty
 }

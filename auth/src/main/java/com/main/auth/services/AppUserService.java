@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import com.main.auth.domain.models.AppUser;
 import com.main.auth.exceptions.UserAlreadyExistException;
 import com.main.auth.repositories.AppUserRepository;
-import com.urlshortener.data.DeleteUserRequest;
-import com.urlshortener.data.RegisterRequest;
-import com.urlshortener.data.UpdateUserRequest;
+import com.urlshortener.data.request.auth.RegisterRequest;
+import com.urlshortener.data.request.user.DeleteUserRequest;
+import com.urlshortener.data.request.user.UpdateUserRequest;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

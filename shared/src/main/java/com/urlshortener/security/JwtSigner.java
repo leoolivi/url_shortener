@@ -8,7 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.urlshortener.data.User;
+import com.urlshortener.data.response.user.UserResponse;
 import com.urlshortener.utils.PemUtil;
 
 import io.jsonwebtoken.Jwts;
@@ -24,14 +24,14 @@ public class JwtSigner {
 
     public String signToken(
             Map<String, Object> extraClaims,
-            User userDetails
+            UserResponse userDetails
     ) throws Exception {
         return Jwts
                 .builder()
                 .claims(extraClaims)
                 .claim("id", userDetails.getId())
                 .claim("role", userDetails.getRole())
-                .claim("details", new User(userDetails.getId(), userDetails.getEmail(), userDetails.getPassword(), userDetails.getRole()))
+                .claim("details", new UserResponse(userDetails.getId(), userDetails.getEmail(), userDetails.getPassword(), userDetails.getRole()))
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + jwtExpiration))
@@ -40,7 +40,7 @@ public class JwtSigner {
     }
 
     public String signToken(
-        User userDetails
+        UserResponse userDetails
     ) throws Exception {
         return signToken(null, userDetails);
     }

@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.urlshortener.data.AuthenticateRequest;
-import com.urlshortener.data.AuthenticateResponse;
-import com.urlshortener.data.RegisterRequest;
+import com.urlshortener.data.request.auth.AuthenticateRequest;
+import com.urlshortener.data.request.auth.RegisterRequest;
+import com.urlshortener.data.response.auth.AuthenticateResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

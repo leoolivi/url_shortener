@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.urlshortener.data.User;
+import com.urlshortener.data.response.user.UserResponse;
 
 
 @RestController
@@ -19,7 +19,7 @@ public class TestController {
     }
 
     @GetMapping("me")
-    public ResponseEntity<?> me(@AuthenticationPrincipal User user) {
+    public ResponseEntity<?> me(@AuthenticationPrincipal UserResponse user) {
         return ResponseEntity.ok(user);
     }
     

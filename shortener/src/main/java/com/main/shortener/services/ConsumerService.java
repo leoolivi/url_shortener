@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import com.main.shortener.exceptions.MappingAlreadyExistException;
 import com.main.shortener.exceptions.MappingNotFoundException;
 import com.main.shortener.exceptions.UnknownRequestPayloadType;
-import com.urlshortener.data.ErrorResponse;
 import com.urlshortener.data.MessageEnvelope;
 import com.urlshortener.data.request.mapping.MappingRequest;
+import com.urlshortener.data.response.error.ErrorResponse;
 import com.urlshortener.data.response.mapping.MappingResponse;
 
 import lombok.AllArgsConstructor;

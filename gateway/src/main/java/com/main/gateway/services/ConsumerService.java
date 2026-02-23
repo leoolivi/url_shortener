@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.main.gateway.domain.events.ResponseFromServicesEvent;
 import com.urlshortener.data.MessageEnvelope;
-import com.urlshortener.data.RedirectResponse;
+import com.urlshortener.data.response.redirect.RedirectResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

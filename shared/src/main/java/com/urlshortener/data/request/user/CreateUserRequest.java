@@ -1,4 +1,4 @@
-package com.urlshortener.data;
+package com.urlshortener.data.request.user;
 
 public record CreateUserRequest (
     String email,

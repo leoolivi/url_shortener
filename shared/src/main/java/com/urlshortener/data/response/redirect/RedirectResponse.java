@@ -1,4 +1,6 @@
-package com.urlshortener.data;
+package com.urlshortener.data.response.redirect;
+
+import com.urlshortener.data.Response;
 
 public record RedirectResponse(
     String code,

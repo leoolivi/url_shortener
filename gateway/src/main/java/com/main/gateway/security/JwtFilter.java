@@ -7,7 +7,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.urlshortener.data.User;
+import com.urlshortener.data.response.user.UserResponse;
 import com.urlshortener.security.JwtAuthenticationToken;
 import com.urlshortener.security.JwtVerifier;
 
@@ -46,7 +46,7 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             var email = jwtVerifier.extractUsername(token);
             if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                User user = jwtVerifier.extractUser(token);
+                UserResponse user = jwtVerifier.extractUser(token);
                 log.info("User loaded: {}", user);
                 if (jwtVerifier.isTokenValid(token, user)) {
                     JwtAuthenticationToken auth = new JwtAuthenticationToken(user, token, user.getAuthorities());

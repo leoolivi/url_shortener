@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.urlshortener.data.User;
+import com.urlshortener.data.response.user.UserResponse;
 import com.urlshortener.utils.PemUtil;
 
 import io.jsonwebtoken.Claims;
@@ -40,7 +40,7 @@ public class JwtVerifier {
         return jwtExpiration;
     }
     
-    public User extractUser(String token) throws IllegalArgumentException, Exception {
+    public UserResponse extractUser(String token) throws IllegalArgumentException, Exception {
         if (token == null) {
             throw new IllegalArgumentException("Token must not be null");
         }
@@ -56,7 +56,7 @@ public class JwtVerifier {
         String password = (String) detailsMap.get("password");
         String role = (String) detailsMap.get("role");
         
-        return new User(id, email, password, role);
+        return new UserResponse(id, email, password, role);
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) throws JwtException, IllegalArgumentException, Exception {

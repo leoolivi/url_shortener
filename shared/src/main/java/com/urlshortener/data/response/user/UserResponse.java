@@ -1,4 +1,4 @@
-package com.urlshortener.data;
+package com.urlshortener.data.response.user;
 
 import java.util.Collection;
 import java.util.List;
@@ -7,6 +7,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.urlshortener.data.Response;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
-public class User implements UserDetails{
+public class UserResponse implements UserDetails, Response {
     private Long id;
     private String email;
     private String password;

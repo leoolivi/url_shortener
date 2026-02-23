@@ -7,12 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.main.redirector.exceptions.UnknownRequestPayloadType;
 import com.urlshortener.data.MessageEnvelope;
-import com.urlshortener.data.RedirectRequest;
-import com.urlshortener.data.RedirectResponse;
 import com.urlshortener.data.request.mapping.CreateMappingRequest;
 import com.urlshortener.data.request.mapping.DeleteMappingRequest;
 import com.urlshortener.data.request.mapping.GetMappingRequest;
 import com.urlshortener.data.request.mapping.UpdateMappingRequest;
+import com.urlshortener.data.request.redirect.RedirectRequest;
+import com.urlshortener.data.response.redirect.RedirectResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

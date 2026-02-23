@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.main.shortener.domain.models.UrlMapping;
 import com.main.shortener.services.UrlMappingService;
-import com.urlshortener.data.CreateMappingRequest;
-import com.urlshortener.data.UpdateMappingRequest;
+import com.urlshortener.data.request.mapping.CreateMappingRequest;
+import com.urlshortener.data.request.mapping.UpdateMappingRequest;
 
 import lombok.AllArgsConstructor;
 
@@ -37,7 +37,7 @@ public class MainController {
 
     @PostMapping("mappings")
     public ResponseEntity<UrlMapping> createMapping(@RequestBody CreateMappingRequest request, @PathVariable Long id) {
-        return ResponseEntity.ok(service.createMapping(request, id));
+        return ResponseEntity.ok(service.createMapping(request));
     }
 
     @DeleteMapping("mappings/{id}")

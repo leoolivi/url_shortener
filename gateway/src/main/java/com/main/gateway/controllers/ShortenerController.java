@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.main.gateway.services.ProducerService;
 import com.main.gateway.services.ResponseListener;
-import com.urlshortener.data.CreateMappingRequest;
-import com.urlshortener.data.DeleteMappingRequest;
-import com.urlshortener.data.GetAllMappingsRequest;
-import com.urlshortener.data.GetMappingRequest;
 import com.urlshortener.data.MessageEnvelope;
-import com.urlshortener.data.UpdateMappingRequest;
+import com.urlshortener.data.request.mapping.CreateMappingRequest;
+import com.urlshortener.data.request.mapping.DeleteMappingRequest;
+import com.urlshortener.data.request.mapping.GetAllMappingsRequest;
+import com.urlshortener.data.request.mapping.GetMappingRequest;
+import com.urlshortener.data.request.mapping.UpdateMappingRequest;
 import com.urlshortener.security.JwtAuthenticationToken;
 
 import lombok.AllArgsConstructor;

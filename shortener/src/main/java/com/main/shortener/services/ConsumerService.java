@@ -1,6 +1,5 @@
 package com.main.shortener.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
@@ -8,20 +7,13 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
-import com.main.shortener.domain.models.UrlMapping;
 import com.main.shortener.exceptions.MappingAlreadyExistException;
 import com.main.shortener.exceptions.MappingNotFoundException;
 import com.main.shortener.exceptions.UnknownRequestPayloadType;
-import com.urlshortener.data.CreateMappingRequest;
-import com.urlshortener.data.DeleteMappingRequest;
 import com.urlshortener.data.ErrorResponse;
-import com.urlshortener.data.GetAllMappingsRequest;
-import com.urlshortener.data.GetMappingRequest;
-import com.urlshortener.data.MappingResponse;
 import com.urlshortener.data.MessageEnvelope;
-import com.urlshortener.data.UpdateMappingRequest;
-import com.urlshortener.data.User;
-import com.urlshortener.security.JwtVerifier;
+import com.urlshortener.data.request.mapping.MappingRequest;
+import com.urlshortener.data.response.mapping.MappingResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,43 +25,20 @@ import tools.jackson.databind.ObjectMapper;
 @RabbitListener(queues="shortener.queue")
 public class ConsumerService {
 
-    private final UrlMappingService service;
     private final RabbitTemplate rabbitTemplate;
     private final ObjectMapper mapper;
-    private final JwtVerifier jwtVerifier;
+    private final MappingRequestHandlerFactory mappingRequestHandlerFactory;
     
     @RabbitHandler
     public void handleMessage(MessageEnvelope<?> message) {
         log.info("Consumed message:  {}", message);
-        List<MappingResponse> responsePayload = new ArrayList<>();
+
+        MappingRequest requestPayload = (MappingRequest) mapper.convertValue(message.getPayload(), message.getPayloadType());
         
         try {
-            User userDetails = jwtVerifier.extractUser(message.getToken());
-            if (message.getPayloadType().equals(CreateMappingRequest.class)) {
-                var payload = mapper.convertValue(message.getPayload(), CreateMappingRequest.class);
-                var newMapping = service.createMapping(new CreateMappingRequest(payload.originalUrl(), payload.code()), userDetails.getId());
-                responsePayload.add(new MappingResponse(newMapping.getId(), newMapping.getOriginalUrl(), newMapping.getCode(), newMapping.getUserId()));
-            } else if (message.getPayloadType().equals(DeleteMappingRequest.class)) {
-                var payload = mapper.convertValue(message.getPayload(), DeleteMappingRequest.class);
-                var deletedMapping = service.deleteMappingByCode(payload.code());
-                responsePayload.add(new MappingResponse(deletedMapping.getId(), deletedMapping.getOriginalUrl(), deletedMapping.getCode(), deletedMapping.getUserId()));
-            } else if (message.getPayloadType().equals(UpdateMappingRequest.class)) {
-                var payload = mapper.convertValue(message.getPayload(), UpdateMappingRequest.class);
-                var updatedMapping = service.updateMapping(payload);
-                responsePayload.add(new MappingResponse(updatedMapping.getId(), updatedMapping.getOriginalUrl(), updatedMapping.getCode(), updatedMapping.getUserId()));
-            } else if (message.getPayloadType().equals(GetMappingRequest.class)) {
-                var payload = mapper.convertValue(message.getPayload(), GetMappingRequest.class);
-                var mapping = service.findByCode(payload.code());
-                responsePayload.add(new MappingResponse(mapping.getId(), mapping.getOriginalUrl(), mapping.getCode(), mapping.getUserId()));
-            } else if (message.getPayloadType().equals(GetAllMappingsRequest.class)) {
-                var mappings = service.getMappings();
-                for (UrlMapping mapping: mappings) {
-                    responsePayload.add(new MappingResponse(mapping.getId(), mapping.getOriginalUrl(), mapping.getCode(), mapping.getUserId()));
-                }
-            } else {
-                throw new UnknownRequestPayloadType("Unknown request payload type.");
-            }
-            
+            MappingRequestHandler requestHandler = mappingRequestHandlerFactory.getHandler(message.getPayloadType());
+            List<MappingResponse> responsePayload = requestHandler.handleRequest(requestPayload);
+
             var response = new MessageEnvelope<List<MappingResponse>>();
             response.setCorrelationId(message.getCorrelationId());
             response.setMessageType("MAPPING_RESPONSE");
@@ -140,7 +109,7 @@ public class ConsumerService {
     
                 log.info("Sent message:  {}", response);
                 
-                rabbitTemplate.convertAndSend("reply.shortener.exchange", "general.error", response);
+                rabbitTemplate.convertAndSend("reply.shortener.exchange", "error.internal", response);
             }
     }
 }

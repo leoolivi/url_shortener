@@ -9,8 +9,8 @@ import com.main.shortener.domain.models.UrlMapping;
 import com.main.shortener.exceptions.MappingAlreadyExistException;
 import com.main.shortener.exceptions.MappingNotFoundException;
 import com.main.shortener.repositories.UrlMappingRepository;
-import com.urlshortener.data.CreateMappingRequest;
-import com.urlshortener.data.UpdateMappingRequest;
+import com.urlshortener.data.request.mapping.CreateMappingRequest;
+import com.urlshortener.data.request.mapping.UpdateMappingRequest;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -37,11 +37,11 @@ public class UrlMappingService {
         return repo.findByCode(code).orElseThrow(() -> new MappingNotFoundException("Mapping not found"));
     }
     
-    public UrlMapping createMapping(CreateMappingRequest request, Long userId) {
+    public UrlMapping createMapping(CreateMappingRequest request) {
         var mapping = UrlMapping.builder()
                             .code(request.code())
                             .originalUrl(request.originalUrl())
-                            .userId(userId)
+                            .userId(request.userId())
                             .build();
         try {
             repo.save(mapping);

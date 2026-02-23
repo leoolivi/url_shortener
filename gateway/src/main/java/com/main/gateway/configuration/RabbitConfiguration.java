@@ -24,6 +24,8 @@ public class RabbitConfiguration {
     private final String REDIRECTOR_QUEUE_RESPONSE = "reply.redirector.queue";
     
     private final String MAPPING_ROUTING_KEY = "mapping.*";
+    private final String AUTH_ROUTING_KEY = "auth.*";
+    private final String ERROR_ROUTING_KEY = "error.*";
 
 
     @Bean
@@ -57,6 +59,22 @@ public class RabbitConfiguration {
                 .bind(replyShortenerQueue)
                 .to(replyShortenerExchange)
                 .with(MAPPING_ROUTING_KEY);
+    }
+
+    @Bean
+    public Binding replyShortenerErrorBinding(Queue replyShortenerQueue, TopicExchange replyShortenerExchange) {
+        return BindingBuilder
+                .bind(replyShortenerQueue)
+                .to(replyShortenerExchange)
+                .with(ERROR_ROUTING_KEY);
+    }
+
+    @Bean
+    public Binding replyShortenerAuthBinding(Queue replyShortenerQueue, TopicExchange replyShortenerExchange) {
+        return BindingBuilder
+                .bind(replyShortenerQueue)
+                .to(replyShortenerExchange)
+                .with(AUTH_ROUTING_KEY);
     }
 
     @Bean

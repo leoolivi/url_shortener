@@ -40,8 +40,10 @@ public class ShortenerController {
 
     @GetMapping("mapping/{code}")
     public ResponseEntity<?> getMapping(@PathVariable String code) {
+        String correlationId = UUID.randomUUID().toString();
+
         MessageEnvelope<GetMappingRequest> message = new MessageEnvelope<>();
-        message.setCorrelationId(UUID.randomUUID().toString());
+        message.setCorrelationId(correlationId);
         message.setMessageType("MAPPING_FIND");
         message.setSource("gateway");
         message.setTimestamp(System.currentTimeMillis());
@@ -49,13 +51,16 @@ public class ShortenerController {
         message.setToken(auth.getToken());
         message.setPayload(new GetMappingRequest(code));
         service.sendMessage("gateway.exchange", "mapping.find", message);
-        MessageEnvelope<?> responseAsync = listener.waitComplete();
+        listener.addCompletableRequest(correlationId);
+        MessageEnvelope<?> responseAsync = listener.waitComplete(correlationId);
         log.info("Response Received: {}", responseAsync);
         return ResponseEntity.ok(responseAsync);
     }
 
     @GetMapping("mapping")
     public ResponseEntity<?> getAllMappings() {
+        String correlationId = UUID.randomUUID().toString();
+
         MessageEnvelope<GetAllMappingsRequest> message = new MessageEnvelope<>();
         message.setCorrelationId(UUID.randomUUID().toString());
         message.setMessageType("MAPPING_FINDALL");
@@ -65,7 +70,8 @@ public class ShortenerController {
         message.setToken(auth.getToken());
         message.setPayload(new GetAllMappingsRequest());
         service.sendMessage("gateway.exchange", "mapping.findall", message);
-        MessageEnvelope<?> responseAsync = listener.waitComplete();
+        listener.addCompletableRequest(correlationId);
+        MessageEnvelope<?> responseAsync = listener.waitComplete(correlationId);
         log.info("Response Received: {}", responseAsync);
         return ResponseEntity.ok(responseAsync);
     }
@@ -74,8 +80,10 @@ public class ShortenerController {
     
     @PostMapping("mapping")
     public ResponseEntity<?> createMapping(@RequestBody CreateMappingRequest request) {
+        String correlationId = UUID.randomUUID().toString();
+
         MessageEnvelope<CreateMappingRequest> message = new MessageEnvelope<>();
-        message.setCorrelationId(UUID.randomUUID().toString());
+        message.setCorrelationId(correlationId);
         message.setMessageType("MAPPING_CREATED");
         message.setSource("gateway");
         message.setTimestamp(System.currentTimeMillis());
@@ -83,7 +91,8 @@ public class ShortenerController {
         JwtAuthenticationToken auth = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         message.setToken(auth.getToken());
         service.sendMessage("gateway.exchange", "mapping.created", message);
-        MessageEnvelope<?> responseAsync = listener.waitComplete();
+        listener.addCompletableRequest(correlationId);
+        MessageEnvelope<?> responseAsync = listener.waitComplete(correlationId);
         log.info("Response Received: {}", responseAsync);
         return ResponseEntity.ok(responseAsync);
     }
@@ -91,7 +100,8 @@ public class ShortenerController {
     @DeleteMapping("mapping/{code}")
     public ResponseEntity<?> deleteMapping(@PathVariable String code ) {
         MessageEnvelope<DeleteMappingRequest> message = new MessageEnvelope<>();
-        message.setCorrelationId(UUID.randomUUID().toString());
+        String correlationId = UUID.randomUUID().toString();
+        message.setCorrelationId(correlationId);
         message.setMessageType("MAPPING_DELETED");
         message.setSource("gateway");
         message.setTimestamp(System.currentTimeMillis());
@@ -100,15 +110,18 @@ public class ShortenerController {
         message.setPayload(new DeleteMappingRequest(code));
         service.sendMessage("gateway.exchange", "mapping.deleted", message);
         service.sendMessage("data.sync.exchange", "sync.mapping.deleted", message);
-        MessageEnvelope<?> responseAsync = listener.waitComplete();
+        listener.addCompletableRequest(correlationId);
+        MessageEnvelope<?> responseAsync = listener.waitComplete(correlationId);
         log.info("Response Received: {}", responseAsync);
         return ResponseEntity.ok(responseAsync);
     }
 
     @PutMapping("mapping")
     public ResponseEntity<?> updateMapping(@RequestBody UpdateMappingRequest request ) {
+        String correlationId = UUID.randomUUID().toString();
+
         MessageEnvelope<UpdateMappingRequest> message = new MessageEnvelope<>();
-        message.setCorrelationId(UUID.randomUUID().toString());
+        message.setCorrelationId(correlationId);
         message.setMessageType("MAPPING_UPDATED");
         message.setSource("gateway");
         message.setTimestamp(System.currentTimeMillis());
@@ -117,7 +130,8 @@ public class ShortenerController {
         message.setPayload(request);
         service.sendMessage("gateway.exchange", "mapping.updated", message);
         service.sendMessage("data.sync.exchange", "sync.mapping.updated", message);
-        MessageEnvelope<?> responseAsync = listener.waitComplete();
+        listener.addCompletableRequest(correlationId);
+        MessageEnvelope<?> responseAsync = listener.waitComplete(correlationId);
         log.info("Response Received: {}", responseAsync);
         return ResponseEntity.ok(responseAsync);
     }

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.main.gateway.domain.events.ResponseFromServicesEvent;
 import com.urlshortener.data.MessageEnvelope;
-import com.urlshortener.data.response.redirect.RedirectResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +25,7 @@ public class ConsumerService {
     }
 
     @RabbitListener(queues = "reply.redirector.queue")
-    public void handleResponseFromRedirector(MessageEnvelope<RedirectResponse> message) {
+    public void handleResponseFromRedirector(MessageEnvelope<?> message) {
         var event = new ResponseFromServicesEvent(message, "Redirected to", message.getPayload().toString());
         log.info("Publishing event: {}", event);
         publisher.publishEvent(event);

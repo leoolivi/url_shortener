@@ -1,5 +1,7 @@
 package com.main.gateway.services;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +18,18 @@ import tools.jackson.databind.ObjectMapper;
 @Slf4j
 public class ResponseListener {
 
-    private CompletableFuture<MessageEnvelope<?>> response = new CompletableFuture<>();
+    private Map<String, CompletableFuture<MessageEnvelope<?>>> requests = new HashMap<>();
     
     @Autowired
     private ObjectMapper mapper;
 
-    public MessageEnvelope<?> waitComplete() {
-        var complete = response.join();
-        response = new CompletableFuture<>();
+    public MessageEnvelope<?> waitComplete(String correlationId) {
+        var complete = requests.get(correlationId).join();
         return complete;
+    }
+
+    public void addCompletableRequest(String correlationId) {
+        requests.put(correlationId, new CompletableFuture<>());
     }
 
     @EventListener
@@ -32,6 +37,6 @@ public class ResponseListener {
         var payload = event.getSource();
         var message = mapper.convertValue(payload, MessageEnvelope.class);
         log.info("Received event message: {}", message.getSource());
-        response.complete(message);
+        requests.get(message.getCorrelationId()).complete(message);
     }
 }

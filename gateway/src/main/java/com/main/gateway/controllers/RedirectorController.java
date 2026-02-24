@@ -28,15 +28,18 @@ public class RedirectorController {
 
     @GetMapping("/{code}")
     public ResponseEntity<?> redirect(@PathVariable String code) {
+        String correlationId = UUID.randomUUID().toString();
+
         MessageEnvelope<RedirectRequest> message = new MessageEnvelope<>();
-        message.setCorrelationId(UUID.randomUUID().toString());
+        message.setCorrelationId(correlationId);
         message.setMessageType("MAPPING_REDIRECT");
         message.setPayload(new RedirectRequest(code));
         message.setSource("gateway");
         message.setTimestamp(System.currentTimeMillis());
 
         service.sendMessage("gateway.exchange", "redirect.get", message);
-        MessageEnvelope<?> responseAsync = listener.waitComplete();
+        listener.addCompletableRequest(correlationId);
+        MessageEnvelope<?> responseAsync = listener.waitComplete(correlationId);
         log.info("Response Received: {}", responseAsync);
         return ResponseEntity.ok(responseAsync);
     }

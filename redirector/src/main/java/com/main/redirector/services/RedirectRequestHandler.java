@@ -2,9 +2,11 @@ package com.main.redirector.services;
 
 import org.springframework.stereotype.Component;
 
+import com.main.redirector.exceptions.MappingNotFoundException;
 import com.urlshortener.data.Request;
 import com.urlshortener.data.Response;
 import com.urlshortener.data.request.redirect.RedirectRequest;
+import com.urlshortener.data.response.error.ErrorResponse;
 import com.urlshortener.data.response.redirect.RedirectResponse;
 
 import lombok.AllArgsConstructor;
@@ -25,9 +27,15 @@ public class RedirectRequestHandler implements RequestHandler {
     @Override
     public Response handleRequest(Request request) {
         RedirectRequest reqPayload = objectMapper.convertValue(request, RedirectRequest.class);
-        RedirectResponse res = new RedirectResponse(
-                                        reqPayload.code(),
-                                        urlMappingService.getOriginalUrl(reqPayload.code()));
+        Response res;
+        try {
+            String originalUrl = urlMappingService.getOriginalUrl(reqPayload.code());
+            res = new RedirectResponse(
+                                            reqPayload.code(),
+                                            originalUrl);
+        } catch (MappingNotFoundException e) {
+            res = new ErrorResponse("REDIRECT_NOT_FOUND", "Redirect not found for code="+reqPayload.code());
+        }
         return res;
     }
 

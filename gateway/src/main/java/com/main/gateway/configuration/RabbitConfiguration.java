@@ -15,7 +15,7 @@ import lombok.Setter;
 @Getter @Setter
 public class RabbitConfiguration {
     
-    private final String EXCHANGE = "gateway.exchange";
+    private final String MAIN_EXCHANGE = "gateway.exchange";
 
     private final String REPLY_SHORTENER_EXCHANGE = "reply.shortener.exchange";
     private final String REPLY_REDIRECTOR_EXCHANGE = "reply.redirector.exchange";
@@ -26,11 +26,12 @@ public class RabbitConfiguration {
     private final String MAPPING_ROUTING_KEY = "mapping.*";
     private final String AUTH_ROUTING_KEY = "auth.*";
     private final String ERROR_ROUTING_KEY = "error.*";
+    private final String DATA_SYNC_ROUTING_KEY = "sync.*";
 
 
     @Bean
     public TopicExchange gatewayExchange() {
-        return new TopicExchange(EXCHANGE);
+        return new TopicExchange(MAIN_EXCHANGE);
     }
 
     @Bean

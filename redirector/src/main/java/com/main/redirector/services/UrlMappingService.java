@@ -2,11 +2,11 @@ package com.main.redirector.services;
 
 import org.springframework.stereotype.Service;
 
-import com.main.redirector.domain.data.CreateMappingRequest;
-import com.main.redirector.domain.data.UpdateMappingRequest;
 import com.main.redirector.domain.models.UrlMapping;
 import com.main.redirector.exceptions.MappingNotFoundException;
 import com.main.redirector.repositories.UrlMappingRepository;
+import com.urlshortener.data.request.mapping.CreateMappingRequest;
+import com.urlshortener.data.request.mapping.UpdateMappingRequest;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

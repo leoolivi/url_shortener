@@ -32,11 +32,4 @@ public class ConsumerService {
         publisher.publishEvent(event);
     }
 
-    @RabbitListener(queues = "reply.auth.queue")
-    public void handleResponseFromAuth(MessageEnvelope<?> message) {
-        var event = new ResponseFromServicesEvent(message, "Auth response", message.getPayload().toString());
-        log.info("Message from auth. Publishing event: {}", event);
-        publisher.publishEvent(event);
-    }
-
 }

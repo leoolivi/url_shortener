@@ -99,6 +99,7 @@ public class ShortenerController {
         message.setToken(auth.getToken());
         message.setPayload(new DeleteMappingRequest(code));
         service.sendMessage("gateway.exchange", "mapping.deleted", message);
+        service.sendMessage("data.sync.exchange", "sync.mapping.deleted", message);
         MessageEnvelope<?> responseAsync = listener.waitComplete();
         log.info("Response Received: {}", responseAsync);
         return ResponseEntity.ok(responseAsync);
@@ -115,6 +116,7 @@ public class ShortenerController {
         message.setToken(auth.getToken());
         message.setPayload(request);
         service.sendMessage("gateway.exchange", "mapping.updated", message);
+        service.sendMessage("data.sync.exchange", "sync.mapping.updated", message);
         MessageEnvelope<?> responseAsync = listener.waitComplete();
         log.info("Response Received: {}", responseAsync);
         return ResponseEntity.ok(responseAsync);

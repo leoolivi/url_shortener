@@ -20,6 +20,7 @@ import lombok.AllArgsConstructor;
 public class UrlMappingService {
 
     private final UrlMappingRepository repo;
+    private final MappingSyncPublisher syncPublisher;
 
     public List<UrlMapping> getMappings() {
         return repo.findAll();
@@ -45,6 +46,7 @@ public class UrlMappingService {
                             .build();
         try {
             repo.save(mapping);
+            syncPublisher.publishCreated(mapping);
         } catch (DataIntegrityViolationException e) {
             throw new MappingAlreadyExistException("Mapping already exists");
         }

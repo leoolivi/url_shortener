@@ -35,7 +35,7 @@ public class RedirectorController {
         message.setSource("gateway");
         message.setTimestamp(System.currentTimeMillis());
 
-        service.sendMessage("gateway.exchange", "mapping.redirect", message);
+        service.sendMessage("gateway.exchange", "redirect.get", message);
         MessageEnvelope<?> responseAsync = listener.waitComplete();
         log.info("Response Received: {}", responseAsync);
         return ResponseEntity.ok(responseAsync);

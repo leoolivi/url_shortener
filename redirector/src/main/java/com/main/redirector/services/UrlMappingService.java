@@ -17,21 +17,23 @@ public class UrlMappingService {
     
     private final UrlMappingRepository repo;
 
-    public void createMapping(CreateMappingRequest request) {
+    public UrlMapping createMapping(CreateMappingRequest request) {
         var mapping = new UrlMapping(request.code(), request.originalUrl());
-        repo.save(mapping);
+        return repo.save(mapping);
     }
 
-    public void deleteMapping(String code) {
+    public UrlMapping deleteMapping(String code) {
+        var mapping = repo.findById(code).orElseThrow(() -> new MappingNotFoundException("Mapping not found"));
         repo.deleteById(code);
+        return mapping;
     }
 
     @Transactional
-    public void updateMapping(UpdateMappingRequest request) {
+    public UrlMapping updateMapping(UpdateMappingRequest request) {
         var mapping = repo.findById(request.code()).orElseThrow(() -> new MappingNotFoundException("Mapping not found"));
         if (request.code() != null) mapping.setCode(request.code());
         if (request.originalUrl() != null) mapping.setOriginalUrl(request.originalUrl());
-        repo.save(mapping);
+        return repo.save(mapping);
     }
 
     public String getOriginalUrl(String code) {

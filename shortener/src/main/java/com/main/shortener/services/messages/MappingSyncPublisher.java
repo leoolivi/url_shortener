@@ -1,4 +1,4 @@
-package com.main.shortener.services;
+package com.main.shortener.services.messages;
 
 import java.util.UUID;
 

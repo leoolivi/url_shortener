@@ -1,12 +1,12 @@
-package com.main.shortener.services;
+package com.main.shortener.services.handlers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import com.main.shortener.domain.models.UrlMapping;
-import com.urlshortener.data.request.mapping.GetAllMappingsRequest;
+import com.main.shortener.services.UrlMappingService;
+import com.urlshortener.data.request.mapping.CreateMappingRequest;
 import com.urlshortener.data.request.mapping.MappingRequest;
 import com.urlshortener.data.response.mapping.MappingResponse;
 
@@ -15,23 +15,21 @@ import tools.jackson.databind.ObjectMapper;
 
 @Component
 @AllArgsConstructor
-public class GetAllMappingsRequestHandler implements MappingRequestHandler {
+public class CreateMappingRequestHandler implements MappingRequestHandler {
 
     private final UrlMappingService urlMappingService;
     private final ObjectMapper objectMapper;
 
     @Override
     public Class<?> getRequestClass() {
-        return GetAllMappingsRequest.class;
+        return CreateMappingRequest.class;
     }
 
     @Override
     public List<MappingResponse> handleRequest(MappingRequest req) {
-        List<UrlMapping> mappings = urlMappingService.getMappings();
-        List<MappingResponse> response = new ArrayList<>();
-        for (UrlMapping mapping: mappings) {
-            response.add(objectMapper.convertValue(mapping, MappingResponse.class));
-        }
-        return response;
+        CreateMappingRequest convertedRequest = objectMapper.convertValue(req, CreateMappingRequest.class);
+        UrlMapping mapping = urlMappingService.createMapping(convertedRequest);
+        return List.of(objectMapper.convertValue(mapping, MappingResponse.class));
     }
+    
 }

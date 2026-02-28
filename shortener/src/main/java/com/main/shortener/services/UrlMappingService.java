@@ -9,6 +9,7 @@ import com.main.shortener.domain.models.UrlMapping;
 import com.main.shortener.exceptions.MappingAlreadyExistException;
 import com.main.shortener.exceptions.MappingNotFoundException;
 import com.main.shortener.repositories.UrlMappingRepository;
+import com.main.shortener.services.messages.MappingSyncPublisher;
 import com.urlshortener.data.request.mapping.CreateMappingRequest;
 import com.urlshortener.data.request.mapping.UpdateMappingRequest;
 

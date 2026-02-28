@@ -2,6 +2,13 @@ package com.main.shortener.services;
 
 import com.main.shortener.domain.models.UrlMapping;
 import com.main.shortener.exceptions.UnsupportedRequestTypeException;
+import com.main.shortener.services.factory.MappingRequestHandlerFactory;
+import com.main.shortener.services.handlers.CreateMappingRequestHandler;
+import com.main.shortener.services.handlers.DeleteMappingRequestHandler;
+import com.main.shortener.services.handlers.GetAllMappingsRequestHandler;
+import com.main.shortener.services.handlers.GetMappingRequestHandler;
+import com.main.shortener.services.handlers.MappingRequestHandler;
+import com.main.shortener.services.handlers.UpdateMappingRequestHandler;
 import com.urlshortener.data.request.mapping.*;
 import com.urlshortener.data.response.mapping.MappingResponse;
 import org.junit.jupiter.api.BeforeEach;

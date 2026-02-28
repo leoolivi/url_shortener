@@ -1,6 +1,7 @@
 package com.main.shortener.services;
 
 import com.main.shortener.domain.models.UrlMapping;
+import com.main.shortener.services.messages.MappingSyncPublisher;
 import com.urlshortener.data.MessageEnvelope;
 import com.urlshortener.data.request.mapping.CreateMappingRequest;
 import org.junit.jupiter.api.DisplayName;

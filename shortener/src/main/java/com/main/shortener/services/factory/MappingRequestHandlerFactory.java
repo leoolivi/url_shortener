@@ -1,8 +1,15 @@
-package com.main.shortener.services;
+package com.main.shortener.services.factory;
 
 import org.springframework.stereotype.Component;
 
 import com.main.shortener.exceptions.UnsupportedRequestTypeException;
+import com.main.shortener.services.UrlMappingService;
+import com.main.shortener.services.handlers.CreateMappingRequestHandler;
+import com.main.shortener.services.handlers.DeleteMappingRequestHandler;
+import com.main.shortener.services.handlers.GetAllMappingsRequestHandler;
+import com.main.shortener.services.handlers.GetMappingRequestHandler;
+import com.main.shortener.services.handlers.MappingRequestHandler;
+import com.main.shortener.services.handlers.UpdateMappingRequestHandler;
 import com.urlshortener.data.request.mapping.CreateMappingRequest;
 import com.urlshortener.data.request.mapping.DeleteMappingRequest;
 import com.urlshortener.data.request.mapping.GetAllMappingsRequest;

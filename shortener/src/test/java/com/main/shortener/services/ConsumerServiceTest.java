@@ -22,6 +22,9 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import com.main.shortener.exceptions.MappingAlreadyExistException;
 import com.main.shortener.exceptions.MappingNotFoundException;
 import com.main.shortener.exceptions.UnknownRequestPayloadType;
+import com.main.shortener.services.factory.MappingRequestHandlerFactory;
+import com.main.shortener.services.handlers.MappingRequestHandler;
+import com.main.shortener.services.messages.MainConsumerService;
 import com.urlshortener.data.MessageEnvelope;
 import com.urlshortener.data.request.mapping.CreateMappingRequest;
 import com.urlshortener.data.response.error.ErrorResponse;
@@ -30,7 +33,7 @@ import com.urlshortener.data.response.mapping.MappingResponse;
 import tools.jackson.databind.ObjectMapper;
 
 /**
- * Test suite per {@link ConsumerService} (shortener).
+ * Test suite per {@link MainConsumerService} (shortener).
  *
  * Copre le risposte inviate su RabbitMQ in caso di:
  *  - elaborazione corretta → "reply.shortener.exchange"  con routing "mapping.response"
@@ -54,7 +57,7 @@ class ConsumerServiceTest {
     private MappingRequestHandlerFactory mappingRequestHandlerFactory;
 
     @InjectMocks
-    private ConsumerService consumerService;
+    private MainConsumerService consumerService;
 
     /** Helper: costruisce un MessageEnvelope generico pronto per i test. */
     private MessageEnvelope<CreateMappingRequest> buildEnvelope() {

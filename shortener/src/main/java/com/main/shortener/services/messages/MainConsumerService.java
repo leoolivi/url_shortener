@@ -1,4 +1,4 @@
-package com.main.shortener.services;
+package com.main.shortener.services.messages;
 
 import java.util.List;
 
@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.main.shortener.exceptions.MappingAlreadyExistException;
 import com.main.shortener.exceptions.MappingNotFoundException;
 import com.main.shortener.exceptions.UnknownRequestPayloadType;
+import com.main.shortener.services.factory.MappingRequestHandlerFactory;
+import com.main.shortener.services.handlers.MappingRequestHandler;
 import com.urlshortener.data.MessageEnvelope;
 import com.urlshortener.data.request.mapping.MappingRequest;
 import com.urlshortener.data.response.error.ErrorResponse;
@@ -23,7 +25,7 @@ import tools.jackson.databind.ObjectMapper;
 @Slf4j
 @AllArgsConstructor
 @RabbitListener(queues="shortener.queue")
-public class ConsumerService {
+public class MainConsumerService {
 
     private final RabbitTemplate rabbitTemplate;
     private final ObjectMapper mapper;

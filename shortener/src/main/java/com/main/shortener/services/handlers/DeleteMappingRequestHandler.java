@@ -1,11 +1,12 @@
-package com.main.shortener.services;
+package com.main.shortener.services.handlers;
 
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import com.main.shortener.domain.models.UrlMapping;
-import com.urlshortener.data.request.mapping.CreateMappingRequest;
+import com.main.shortener.services.UrlMappingService;
+import com.urlshortener.data.request.mapping.DeleteMappingRequest;
 import com.urlshortener.data.request.mapping.MappingRequest;
 import com.urlshortener.data.response.mapping.MappingResponse;
 
@@ -14,20 +15,20 @@ import tools.jackson.databind.ObjectMapper;
 
 @Component
 @AllArgsConstructor
-public class CreateMappingRequestHandler implements MappingRequestHandler {
+public class DeleteMappingRequestHandler implements MappingRequestHandler {
 
     private final UrlMappingService urlMappingService;
     private final ObjectMapper objectMapper;
 
     @Override
     public Class<?> getRequestClass() {
-        return CreateMappingRequest.class;
+        return DeleteMappingRequest.class;
     }
 
     @Override
     public List<MappingResponse> handleRequest(MappingRequest req) {
-        CreateMappingRequest convertedRequest = objectMapper.convertValue(req, CreateMappingRequest.class);
-        UrlMapping mapping = urlMappingService.createMapping(convertedRequest);
+        DeleteMappingRequest convertedRequest = objectMapper.convertValue(req, DeleteMappingRequest.class);
+        UrlMapping mapping = urlMappingService.deleteMappingByCode(convertedRequest.code());
         return List.of(objectMapper.convertValue(mapping, MappingResponse.class));
     }
     

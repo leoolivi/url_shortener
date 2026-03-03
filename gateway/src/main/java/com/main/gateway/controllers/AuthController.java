@@ -25,7 +25,7 @@ public class AuthController {
     private final WebClient webClient;
     
     @PostMapping("login")
-    public Mono<ResponseEntity<?>> login(@RequestBody AuthenticateRequest request) {
+    public Mono<ResponseEntity<AuthenticateResponse>> login(@RequestBody AuthenticateRequest request) {
         log.info(
             "sending request {}", request
         );        

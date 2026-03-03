@@ -1,0 +1,27 @@
+{"properties": [
+  {
+    "name": "security.jwt.public-key-path",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.public-key-path'"
+  },
+  {
+    "name": "security.jwt.private-key-path",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.private-key-path'"
+  },
+  {
+    "name": "security.jwt.private-key-path",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.private-key-path'"
+  },
+  {
+    "name": "security.jwt.algorithm",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.algorithm'"
+  },
+  {
+    "name": "security.jwt.expiration-time",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.expiration-time'"
+  }
+]}

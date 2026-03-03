@@ -1,0 +1,28 @@
+
+spring:
+    application:
+        name: shortener
+    datasource:
+        url: ${DB_URL}
+        driverClassName: ${DB_DRIVER}
+        password: ${DB_USERNAME} 
+        username: ${DB_PASSWORD}
+    jpa:
+        database-platform: ${DB_PLATFORM}
+        hibernate:
+            ddl-auto: none
+    rabbitmq:
+        host: ${RABBITMQ_HOST}
+        port: ${RABBITMQ_PORT}
+        username: ${RABBITMQ_USERNAME}
+        password: ${RABBITMQ_PASSWORD}
+
+server:
+    port: 3003
+
+security:
+    jwt:
+        public-key-path: ${JWT_PUBLIC_KEY_PATH}
+        private-key-path: ${JWT_PRIVATE_KEY_PATH}
+        algorithm: ${JWT_ALG}
+        expiration-time: ${JWT_EXPIRATION_TIME}

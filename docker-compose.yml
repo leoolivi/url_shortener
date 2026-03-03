@@ -1,0 +1,69 @@
+version: '3'
+services:
+  redirector:
+    image: redirector_image_name
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=redirector
+
+  auth:
+    image: auth_image_name
+    ports:
+      - 8081:8080
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=auth
+
+  shortener:
+    image: shortener_image_name
+    ports:
+      - 8082:8080
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=shortener
+
+  gateway:
+    image: gateway_image_name
+    ports:
+      - 8083:8080
+    depends_on:
+      - redis
+      - rabbitmq
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+  db:
+    image: postgres
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=redirector
+  rabbitmq:
+    image: rabbitmq:3.8.0-management
+    ports:
+      - 5672:5672
+      - 15672:15672

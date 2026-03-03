@@ -11,7 +11,7 @@ public class ApplicationConfiguration {
 
     @Bean
     public WebClient webClient() {
-        return WebClient.create("http://localhost:3002");
+        return WebClient.create("http://localhost:3000");
     }
 
     @Bean

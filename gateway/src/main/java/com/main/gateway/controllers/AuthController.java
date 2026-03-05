@@ -34,7 +34,8 @@ public class AuthController {
             .bodyValue(request)
             .retrieve()
             .bodyToMono(AuthenticateResponse.class)
-            .map(response -> ResponseEntity.ok(response));
+            .map(response -> ResponseEntity.ok(response))
+            .switchIfEmpty(Mono.error(new RuntimeException("Login failed")));
     }
 
     @PostMapping("register")

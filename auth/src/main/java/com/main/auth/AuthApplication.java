@@ -25,7 +25,7 @@ public class AuthApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		repo.save(new AppUser("email", passwordEncoder.encode("password"), "user"));
+		repo.save(new AppUser("user@example.com", passwordEncoder.encode("password"), "user"));
 		log.info("Created mock user");
 	}
 

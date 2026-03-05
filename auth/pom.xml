@@ -109,6 +109,7 @@
 			<groupId>tools.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
 		</dependency>
+
 	</dependencies>
 
 	<build>

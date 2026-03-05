@@ -26,8 +26,8 @@ public class AuthenticationService {
     private final AppUserService detailsService;
 
     public AuthenticateResponse authenticate(AuthenticateRequest request) throws Exception {
+        // TODO: Add authentication error handling for invalid credentials
         var auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
-
         if (auth.isAuthenticated()) {
             AppUser userDetails = detailsService.findUserByEmail(request.email());
             UserResponse user = new UserResponse(userDetails.getId(), userDetails.getEmail(), userDetails.getPassword(), userDetails.getRole());

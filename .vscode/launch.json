@@ -15,7 +15,7 @@
             "mainClass": "com.main.shortener.ShortenerApplication",
             "projectName": "shortener",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/shortener/.env.dev"
         },
         {
             "type": "java",
@@ -25,7 +25,7 @@
             "mainClass": "com.main.redirector.RedirectorApplication",
             "projectName": "redirector",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/redirector/.env.dev"
         },
         {
             "type": "java",
@@ -35,7 +35,7 @@
             "mainClass": "com.main.gateway.GatewayApplication",
             "projectName": "gateway",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/gateway/.env.dev"
         },
         {
             "type": "java",
@@ -45,8 +45,20 @@
             "mainClass": "com.main.auth.AuthApplication",
             "projectName": "auth",
             "args": "",
-            "envFile": "${workspaceFolder}/.env",
+            "envFile": "${workspaceFolder}/auth/.env.dev",
             "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=59494 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=auth"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "All Services",
+            "configurations": [
+                "Spring Boot-ShortenerApplication<shortener>",
+                "Spring Boot-RedirectorApplication<redirector>",
+                "Spring Boot-GatewayApplication<gateway>",
+                "Spring Boot-AuthApplication<auth>"
+            ],
+            "stopAll": true,
         }
     ]
 }

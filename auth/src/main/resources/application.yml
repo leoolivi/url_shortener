@@ -5,8 +5,8 @@ spring:
     datasource:
         url: ${DB_URL}
         driverClassName: ${DB_DRIVER}
-        password: ${DB_USERNAME} 
-        username: ${DB_PASSWORD}
+        password: ${DB_PASSWORD}
+        username: ${DB_USERNAME}
     jpa:
         database-platform: ${DB_PLATFORM}
         hibernate:

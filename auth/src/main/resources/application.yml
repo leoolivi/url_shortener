@@ -22,7 +22,9 @@ server:
 
 security:
     jwt:
-        public-key-path: ${JWT_PUBLIC_KEY_PATH}
-        private-key-path: ${JWT_PRIVATE_KEY_PATH}
+        user-public-key-path: ${USER_JWT_PUBLIC_KEY_PATH}
+        user-private-key-path: ${USER_JWT_PRIVATE_KEY_PATH}
+        internal-public-key-path: ${INTERNAL_JWT_PUBLIC_KEY_PATH}
+        user-expiration-time: ${USER_JWT_EXPIRATION_TIME}
+        internal-expiration-time: ${INTERNAL_JWT_EXPIRATION_TIME}
         algorithm: ${JWT_ALG}
-        expiration-time: ${JWT_EXPIRATION_TIME}

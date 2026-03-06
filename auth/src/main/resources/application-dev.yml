@@ -22,7 +22,8 @@ server:
 
 security:
     jwt:
-        public-key-path: ./jwt-public-pkcs8.pem
-        private-key-path: ./jwt-private-pkcs8.pem
+        user-public-key-path: ./user_public_key.pem
+        internal-public-key-path: ./internal_public_key.pem
         algorithm: RS256
-        expiration-time: 900000
+        user-expiration-time: 900000
+        internal-expiration-time: 900000

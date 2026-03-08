@@ -10,7 +10,8 @@ import com.urlshortener.data.request.auth.AuthenticateRequest;
 import com.urlshortener.data.request.auth.RegisterRequest;
 import com.urlshortener.data.response.auth.AuthenticateResponse;
 import com.urlshortener.data.response.user.UserResponse;
-import com.urlshortener.security.JwtSigner;
+import com.urlshortener.security.UserJwtSigner;
+import com.urlshortener.utils.UserMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
-    // private final JwtService jwtService;
-    private final JwtSigner jwtSigner;
+    private final UserMapper userMapper;
+    private final UserJwtSigner jwtSigner;
     private final AppUserService detailsService;
 
     public AuthenticateResponse authenticate(AuthenticateRequest request) throws Exception {
@@ -32,7 +33,7 @@ public class AuthenticationService {
             AppUser userDetails = detailsService.findUserByEmail(request.email());
             UserResponse user = new UserResponse(userDetails.getId(), userDetails.getEmail(), userDetails.getPassword(), userDetails.getRole());
             SecurityContextHolder.getContext().setAuthentication(auth);
-            String token = jwtSigner.signToken(user);
+            String token = jwtSigner.signToken(userMapper.fromUserResponseToClaims(user));
             return AuthenticateResponse.builder()
                         .email(request.email())
                         .id(userDetails.getId())
@@ -52,7 +53,7 @@ public class AuthenticationService {
         var newUser = detailsService.createUser(new RegisterRequest(request.email(), request.password(), request.role()));
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
         UserResponse user = new UserResponse(newUser.getId(), newUser.getEmail(), newUser.getPassword(), newUser.getRole());
-        String token = jwtSigner.signToken(user);
+        String token = jwtSigner.signToken(userMapper.fromUserResponseToClaims(user));
         log.info("user created successfully");
         return AuthenticateResponse.builder()
                     .id(newUser.getId())

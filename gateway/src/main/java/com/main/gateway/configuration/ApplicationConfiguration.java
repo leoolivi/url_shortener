@@ -4,7 +4,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.urlshortener.security.JwtVerifier;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.urlshortener.security.InternalEnvBase64KeyProvider;
+import com.urlshortener.security.InternalJwtVerifier;
+import com.urlshortener.security.InternalKeyProvider;
+import com.urlshortener.security.InternalTokenPolicyProvider;
+import com.urlshortener.security.JwtProperties;
+import com.urlshortener.security.UserEnvBase64KeyProvider;
+import com.urlshortener.security.UserJwtVerifier;
+import com.urlshortener.security.UserKeyProvider;
+import com.urlshortener.utils.UserMapper;
 
 @Configuration
 public class ApplicationConfiguration {
@@ -15,7 +24,43 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    public JwtVerifier jwtVerifier() {
-        return new JwtVerifier(); 
+    public UserJwtVerifier userJwtVerifier(UserKeyProvider keyProvider, ObjectMapper objectMapper) {
+        return new UserJwtVerifier(keyProvider, objectMapper); 
+    }
+
+    @Bean
+    public InternalJwtVerifier internalJwtVerifier(InternalKeyProvider keyProvider, InternalTokenPolicyProvider tokenPolicyProvider) {
+        return new InternalJwtVerifier(keyProvider, tokenPolicyProvider); 
+    }
+
+    @Bean
+    public InternalTokenPolicyProvider internalTokenPolicyProvider(JwtProperties jwtProperties) {
+        return new InternalTokenPolicyProvider(jwtProperties);
+    }
+
+    @Bean
+    public UserKeyProvider userKeyProvider(JwtProperties jwtProperties) {
+        return new UserEnvBase64KeyProvider(jwtProperties);
+    }
+
+
+    @Bean
+    public InternalKeyProvider internalKeyProvider(JwtProperties jwtProperties) {
+        return new InternalEnvBase64KeyProvider(jwtProperties);
+    }
+
+    @Bean 
+    public JwtProperties jwtProperties() {
+        return new JwtProperties();
+    }
+
+    @Bean
+    public UserMapper userMapper() {
+        return new UserMapper();
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 }

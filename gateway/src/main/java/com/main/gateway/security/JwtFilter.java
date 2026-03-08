@@ -1,15 +1,20 @@
 package com.main.gateway.security;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.urlshortener.data.response.user.UserResponse;
+import com.urlshortener.data.user.UserClaims;
 import com.urlshortener.security.JwtAuthenticationToken;
-import com.urlshortener.security.JwtVerifier;
+import com.urlshortener.security.UserJwtVerifier;
+import com.urlshortener.utils.UserMapper;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,7 +28,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final JwtVerifier jwtVerifier;
+    private final UserJwtVerifier jwtVerifier;
+    private final UserMapper userMapper;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -46,10 +52,12 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             var email = jwtVerifier.extractUsername(token);
             if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserResponse user = jwtVerifier.extractUser(token);
+                UserClaims user = jwtVerifier.extractPayload(token);
+                var role = new SimpleGrantedAuthority(user.role());
+                Collection<SimpleGrantedAuthority> authorities = List.of(role);
                 log.info("User loaded: {}", user);
                 if (jwtVerifier.isTokenValid(token, user)) {
-                    JwtAuthenticationToken auth = new JwtAuthenticationToken(user, token, user.getAuthorities());
+                    JwtAuthenticationToken auth = new JwtAuthenticationToken(user, token, authorities);
                     auth.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
                     );

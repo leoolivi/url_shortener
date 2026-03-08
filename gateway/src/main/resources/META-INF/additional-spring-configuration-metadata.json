@@ -23,5 +23,65 @@
     "name": "security.jwt.algorithm",
     "type": "java.lang.String",
     "description": "A description for 'security.jwt.algorithm'"
+  },
+  {
+    "name": "security.jwt.user-expiration-time",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.user-expiration-time'"
+  },
+  {
+    "name": "security.jwt.user-public-key",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.user-public-key'"
+  },
+  {
+    "name": "security.jwt.internal-public-key",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.internal-public-key'"
+  },
+  {
+    "name": "security.jwt.internal-private-key",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.internal-private-key'"
+  },
+  {
+    "name": "security.jwt.internal-expiration-time",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.internal-expiration-time'"
+  },
+  {
+    "name": "security.jwt.internal.public-key",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.internal.public-key'"
+  },
+  {
+    "name": "security.jwt.user.public-key",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.user.public-key'"
+  },
+  {
+    "name": "security.jwt.user.expiration-time",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.user.expiration-time'"
+  },
+  {
+    "name": "security.jwt.internal.private-key",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.internal.private-key'"
+  },
+  {
+    "name": "security.jwt.internal.expiration-time",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.internal.expiration-time'"
+  },
+  {
+    "name": "security.jwt.user.expiration",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.user.expiration'"
+  },
+  {
+    "name": "security.jwt.internal.expiration",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.internal.expiration'"
   }
 ]}

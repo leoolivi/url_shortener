@@ -5,14 +5,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.urlshortener.security.InternalEnvBase64KeyProvider;
-import com.urlshortener.security.InternalJwtVerifier;
-import com.urlshortener.security.InternalKeyProvider;
-import com.urlshortener.security.InternalTokenPolicyProvider;
 import com.urlshortener.security.JwtProperties;
-import com.urlshortener.security.UserEnvBase64KeyProvider;
-import com.urlshortener.security.UserJwtVerifier;
-import com.urlshortener.security.UserKeyProvider;
+import com.urlshortener.security.jwt.verifier.InternalJwtVerifier;
+import com.urlshortener.security.jwt.verifier.UserJwtVerifier;
+import com.urlshortener.security.keys.internal.InternalEnvBase64KeyProvider;
+import com.urlshortener.security.keys.internal.InternalKeyProvider;
+import com.urlshortener.security.keys.internal.InternalTokenPolicyProvider;
+import com.urlshortener.security.keys.user.UserEnvBase64KeyProvider;
+import com.urlshortener.security.keys.user.UserKeyProvider;
 import com.urlshortener.utils.UserMapper;
 
 @Configuration

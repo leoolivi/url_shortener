@@ -1,4 +1,4 @@
-package com.urlshortener.security;
+package com.urlshortener.security.keys.internal;
 
 import java.security.KeyFactory;
 import java.security.PrivateKey;
@@ -10,16 +10,16 @@ import java.util.Base64;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
+import com.urlshortener.security.JwtProperties;
+
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 // impl/EnvBase64KeyProvider.java
 @Component
-@ConditionalOnProperty(prefix = "security.jwt", name = "user", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "security.jwt", name = "internal", matchIfMissing = true)
 @RequiredArgsConstructor
-@Slf4j
-public class UserEnvBase64KeyProvider implements UserKeyProvider {
+public class InternalEnvBase64KeyProvider implements InternalKeyProvider {
 
     private final JwtProperties jwtProps;
 
@@ -29,9 +29,9 @@ public class UserEnvBase64KeyProvider implements UserKeyProvider {
 
     @PostConstruct
     public void init() {
-        String privateKeyBase64 = jwtProps.getUser().getPrivateKey();
-        String publicKeyBase64 = jwtProps.getUser().getPublicKey();
-        
+        String privateKeyBase64 = jwtProps.getInternal().getPrivateKey();
+        String publicKeyBase64 = jwtProps.getInternal().getPublicKey();
+
         // Decodifica base64 → bytes → chiave RSA
         if (privateKeyBase64 != null && !privateKeyBase64.isBlank()) {
             this.privateKey = parsePrivateKey(privateKeyBase64);

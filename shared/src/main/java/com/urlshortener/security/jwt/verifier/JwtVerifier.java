@@ -1,4 +1,4 @@
-package com.urlshortener.security;
+package com.urlshortener.security.jwt.verifier;
 
 import com.urlshortener.data.JwtClaims;
 

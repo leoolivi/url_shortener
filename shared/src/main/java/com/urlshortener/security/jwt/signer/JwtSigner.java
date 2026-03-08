@@ -1,4 +1,4 @@
-package com.urlshortener.security;
+package com.urlshortener.security.jwt.signer;
 
 import java.util.Map;
 

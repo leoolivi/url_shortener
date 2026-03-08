@@ -1,10 +1,10 @@
-package com.urlshortener.security;
+package com.urlshortener.security.keys.internal;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
 // KeyProvider.java
-public interface UserKeyProvider {
+public interface InternalKeyProvider {
     PrivateKey getPrivateKey();
     PublicKey getPublicKey();
 }

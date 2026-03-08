@@ -12,15 +12,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.main.auth.repositories.AppUserRepository;
-import com.urlshortener.security.InternalEnvBase64KeyProvider;
-import com.urlshortener.security.InternalJwtVerifier;
-import com.urlshortener.security.InternalKeyProvider;
-import com.urlshortener.security.InternalTokenPolicyProvider;
 import com.urlshortener.security.JwtProperties;
-import com.urlshortener.security.UserEnvBase64KeyProvider;
-import com.urlshortener.security.UserJwtSigner;
-import com.urlshortener.security.UserKeyProvider;
-import com.urlshortener.security.UserTokenPolicyProvider;
+import com.urlshortener.security.jwt.signer.UserJwtSigner;
+import com.urlshortener.security.jwt.verifier.InternalJwtVerifier;
+import com.urlshortener.security.keys.internal.InternalEnvBase64KeyProvider;
+import com.urlshortener.security.keys.internal.InternalKeyProvider;
+import com.urlshortener.security.keys.internal.InternalTokenPolicyProvider;
+import com.urlshortener.security.keys.user.UserEnvBase64KeyProvider;
+import com.urlshortener.security.keys.user.UserKeyProvider;
+import com.urlshortener.security.keys.user.UserTokenPolicyProvider;
 import com.urlshortener.utils.UserMapper;
 
 import lombok.AllArgsConstructor;

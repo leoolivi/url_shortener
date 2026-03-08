@@ -10,7 +10,7 @@ import com.urlshortener.data.request.auth.AuthenticateRequest;
 import com.urlshortener.data.request.auth.RegisterRequest;
 import com.urlshortener.data.response.auth.AuthenticateResponse;
 import com.urlshortener.data.response.user.UserResponse;
-import com.urlshortener.security.UserJwtSigner;
+import com.urlshortener.security.jwt.signer.UserJwtSigner;
 import com.urlshortener.utils.UserMapper;
 
 import lombok.AllArgsConstructor;

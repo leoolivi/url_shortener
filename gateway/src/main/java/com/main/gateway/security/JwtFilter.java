@@ -13,7 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.urlshortener.data.response.user.UserResponse;
 import com.urlshortener.data.user.UserClaims;
 import com.urlshortener.security.JwtAuthenticationToken;
-import com.urlshortener.security.UserJwtVerifier;
+import com.urlshortener.security.jwt.verifier.UserJwtVerifier;
 import com.urlshortener.utils.UserMapper;
 
 import jakarta.servlet.FilterChain;

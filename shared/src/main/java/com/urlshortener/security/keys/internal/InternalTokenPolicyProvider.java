@@ -1,4 +1,7 @@
-package com.urlshortener.security;
+package com.urlshortener.security.keys.internal;
+
+import com.urlshortener.security.JwtProperties;
+import com.urlshortener.security.keys.TokenPolicyProvider;
 
 import lombok.AllArgsConstructor;
 

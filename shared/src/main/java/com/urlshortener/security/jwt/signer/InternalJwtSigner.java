@@ -1,4 +1,4 @@
-package com.urlshortener.security;
+package com.urlshortener.security.jwt.signer;
 
 import java.util.Date;
 import java.util.Map;
@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.urlshortener.data.internal.InternalClaims;
+import com.urlshortener.security.keys.internal.InternalKeyProvider;
+import com.urlshortener.security.keys.internal.InternalTokenPolicyProvider;
 
 import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;

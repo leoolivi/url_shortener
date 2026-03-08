@@ -5,7 +5,8 @@ import com.main.auth.exceptions.UserAlreadyExistException;
 import com.urlshortener.data.request.auth.AuthenticateRequest;
 import com.urlshortener.data.request.auth.RegisterRequest;
 import com.urlshortener.data.response.auth.AuthenticateResponse;
-import com.urlshortener.security.JwtSigner;
+import com.urlshortener.security.jwt.signer.JwtSigner;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

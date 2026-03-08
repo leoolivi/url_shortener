@@ -1,4 +1,4 @@
-package com.urlshortener.security;
+package com.urlshortener.security.jwt.verifier;
 
 import java.util.Date;
 import java.util.function.Function;
@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.urlshortener.data.user.UserClaims;
+import com.urlshortener.security.keys.user.UserKeyProvider;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;

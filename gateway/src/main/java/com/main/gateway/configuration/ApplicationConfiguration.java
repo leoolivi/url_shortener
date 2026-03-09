@@ -13,6 +13,7 @@ import com.urlshortener.security.keys.internal.InternalKeyProvider;
 import com.urlshortener.security.keys.internal.InternalTokenPolicyProvider;
 import com.urlshortener.security.keys.user.UserEnvBase64KeyProvider;
 import com.urlshortener.security.keys.user.UserKeyProvider;
+import com.urlshortener.utils.KeyPairGeneratorUtil;
 import com.urlshortener.utils.UserMapper;
 
 @Configuration
@@ -62,5 +63,10 @@ public class ApplicationConfiguration {
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
+    }
+
+    @Bean
+    public KeyPairGeneratorUtil keyPairGeneratorUtil() {
+        return new KeyPairGeneratorUtil();
     }
 }

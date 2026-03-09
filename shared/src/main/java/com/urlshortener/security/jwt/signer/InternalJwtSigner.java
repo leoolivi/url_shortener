@@ -30,7 +30,7 @@ public class InternalJwtSigner implements JwtSigner<InternalClaims> {
                 .subject(claims.serviceName())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + tokenPolicyProvider.getExpiration()))
-                .signWith(keyProvider.getPrivateKey())
+                .signWith(keyProvider.getPrivateKey().get())
                 .compact();
     }
 

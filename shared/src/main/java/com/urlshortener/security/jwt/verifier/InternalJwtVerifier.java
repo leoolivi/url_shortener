@@ -33,7 +33,7 @@ public class InternalJwtVerifier implements JwtVerifier<InternalClaims> {
     private Claims extractAllClaims(String token) throws JwtException, IllegalArgumentException, Exception {
         return Jwts
                 .parser()
-                .verifyWith(keyProvider.getPublicKey())
+                .verifyWith(keyProvider.getPublicKey().get())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();

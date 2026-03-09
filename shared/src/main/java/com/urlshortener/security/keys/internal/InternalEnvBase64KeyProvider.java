@@ -6,6 +6,7 @@ import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+import java.util.Optional;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -40,14 +41,14 @@ public class InternalEnvBase64KeyProvider implements InternalKeyProvider {
     }
 
     @Override
-    public PrivateKey getPrivateKey() {
+    public Optional<PrivateKey> getPrivateKey() {
         if (privateKey == null) throw new IllegalStateException("Private key not configured");
-        return privateKey;
+        return Optional.of(privateKey);
     }
 
     @Override
-    public PublicKey getPublicKey() {
-        return publicKey;
+    public Optional<PublicKey> getPublicKey() {
+        return Optional.of(publicKey);
     }
 
     private PrivateKey parsePrivateKey(String base64) {

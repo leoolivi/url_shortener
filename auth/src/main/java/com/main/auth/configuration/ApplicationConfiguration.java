@@ -21,6 +21,7 @@ import com.urlshortener.security.keys.internal.InternalTokenPolicyProvider;
 import com.urlshortener.security.keys.user.UserEnvBase64KeyProvider;
 import com.urlshortener.security.keys.user.UserKeyProvider;
 import com.urlshortener.security.keys.user.UserTokenPolicyProvider;
+import com.urlshortener.utils.KeyPairGeneratorUtil;
 import com.urlshortener.utils.UserMapper;
 
 import lombok.AllArgsConstructor;
@@ -93,5 +94,10 @@ public class ApplicationConfiguration {
     @Bean
     public UserMapper userMapper() {
         return new UserMapper();
+    }
+
+    @Bean
+    public KeyPairGeneratorUtil keyPairGeneratorUtil() {
+        return new KeyPairGeneratorUtil();
     }
 }

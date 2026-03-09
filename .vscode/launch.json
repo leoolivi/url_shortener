@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "KeyPairGeneratorUtil",
+            "request": "launch",
+            "mainClass": "com.urlshortener.utils.KeyPairGeneratorUtil",
+            "projectName": "shared"
+        },
+        {
+            "type": "java",
             "name": "PemUtil",
             "request": "launch",
             "mainClass": "com.urlshortener.utils.PemUtil",

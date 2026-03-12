@@ -1,8 +1,8 @@
 package com.main.gateway.services;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -18,7 +18,7 @@ import tools.jackson.databind.ObjectMapper;
 @Slf4j
 public class ResponseListener {
 
-    private Map<String, CompletableFuture<MessageEnvelope<?>>> requests = new HashMap<>();
+    private final Map<String, CompletableFuture<MessageEnvelope<?>>> requests = new ConcurrentHashMap<>();
     
     @Autowired
     private ObjectMapper mapper;

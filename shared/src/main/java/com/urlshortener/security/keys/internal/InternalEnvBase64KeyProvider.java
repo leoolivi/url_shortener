@@ -41,14 +41,13 @@ public class InternalEnvBase64KeyProvider implements InternalKeyProvider {
     }
 
     @Override
-    public Optional<PrivateKey> getPrivateKey() {
-        if (privateKey == null) throw new IllegalStateException("Private key not configured");
-        return Optional.of(privateKey);
+    public Optional<PublicKey> getPublicKey() {
+        return Optional.of(publicKey);
     }
 
     @Override
-    public Optional<PublicKey> getPublicKey() {
-        return Optional.of(publicKey);
+    public Optional<PrivateKey> getPrivateKey() {
+        return Optional.of(privateKey);
     }
 
     private PrivateKey parsePrivateKey(String base64) {
@@ -81,4 +80,6 @@ public class InternalEnvBase64KeyProvider implements InternalKeyProvider {
             throw new IllegalStateException("Failed to parse public key", e);
         }
     }
+
+
 }

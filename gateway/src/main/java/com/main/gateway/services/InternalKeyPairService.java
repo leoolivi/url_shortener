@@ -4,11 +4,8 @@ import java.security.NoSuchAlgorithmException;
 
 import org.springframework.stereotype.Service;
 
-import com.main.gateway.domain.models.InternalKeyPair;
-import com.main.gateway.repositories.InternalKeyPairRepository;
 import com.urlshortener.security.KeyPairService;
 import com.urlshortener.security.keys.StringKeyPair;
-import com.urlshortener.security.keys.internal.InternalTokenPolicyProvider;
 import com.urlshortener.utils.KeyPairGeneratorUtil;
 
 import jakarta.transaction.Transactional;
@@ -19,20 +16,14 @@ import lombok.AllArgsConstructor;
 public class InternalKeyPairService implements KeyPairService{
 
     private final KeyPairGeneratorUtil generatorUtil;
-    private final InternalKeyPairRepository keyPairRepository;
-    private final InternalTokenPolicyProvider tokenPolicyProvider;
+    private final InternalKeyHolder internalKeyHolder;
 
     @Override
     @Transactional
     public StringKeyPair generateStringKeyPair(int size) throws NoSuchAlgorithmException {
         StringKeyPair skp = generatorUtil.generateStringKeyPair(size);
-        var newAppKeyPair = InternalKeyPair.builder()
-                                .privateKey(skp.getPrivateKey())
-                                .publicKey(skp.getPublicKey())
-                                .expiresAt(System.currentTimeMillis()+tokenPolicyProvider.getExpiration())
-                                .build();
-        keyPairRepository.invalidateAll();
-        keyPairRepository.save(newAppKeyPair);
+        internalKeyHolder.setPrivateKey(skp.getPrivateKey());
+        internalKeyHolder.setPublicKey(skp.getPublicKey());
         return skp;
     }
 
@@ -42,8 +33,12 @@ public class InternalKeyPairService implements KeyPairService{
     }
 
     @Override
-    public StringKeyPair findCurrentStringKeyPair() {
-        var internalKeyPair = keyPairRepository.findCurrentInternalKeyPair();
-        return new StringKeyPair(internalKeyPair.getPrivateKey(), internalKeyPair.getPublicKey());
+    public String findCurrentPublicKey() {
+        return internalKeyHolder.getPublicKey();
+    }
+
+    @Override
+    public String findCurrentPrivateKey() {
+        return internalKeyHolder.getPrivateKey();
     }
 }

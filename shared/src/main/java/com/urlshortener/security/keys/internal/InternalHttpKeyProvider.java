@@ -23,7 +23,7 @@ public class InternalHttpKeyProvider implements InternalKeyProvider {
 
     @Override
     public Optional<PrivateKey> getPrivateKey() {
-        var privKeyStr = keyPairService.findCurrentStringKeyPair().getPrivateKey();
+        var privKeyStr = keyPairService.findCurrentPrivateKey();
 
         byte[] encoded = Base64.getDecoder().decode(privKeyStr);
         

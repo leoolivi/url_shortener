@@ -7,5 +7,6 @@ import com.urlshortener.security.keys.StringKeyPair;
 public interface KeyPairService {
     public StringKeyPair generateStringKeyPair() throws NoSuchAlgorithmException;
     public StringKeyPair generateStringKeyPair(int size) throws NoSuchAlgorithmException;
-    public StringKeyPair findCurrentStringKeyPair();
+    public String findCurrentPublicKey();
+    public String findCurrentPrivateKey();
 }
